@@ -15,18 +15,12 @@ public class LoggedInController implements Initializable {
     @FXML
     private Label welcome_label;
     @FXML
-    //private Button logout_button;
+    private Button logout_button;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /*
-        logoutBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Utils.changeScene(event, "main.fxml", "Log in", null);
-            }
-        });
-         */
+        //Lambda instead of eventhandler
+        logout_button.setOnAction(event -> Utils.changeScene(event, "login-view.fxml", "Log in", null));
     }
 
     public void setUserInformation(String username) {
