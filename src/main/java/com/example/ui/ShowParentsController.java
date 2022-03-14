@@ -72,29 +72,25 @@ public class ShowParentsController implements Initializable {
             parents_tableview.setItems(parentsSearchModelObservableList);
             //its filter our search
             FilteredList<ParentsSearchModel> filteredList = new FilteredList<>(parentsSearchModelObservableList, p -> true);
-                keyword_textfield.textProperty().addListener((observable, oldValue, newValue) -> {
-                    filteredList.setPredicate(parentsSearchModel -> {
-                        if (newValue.isBlank() || newValue.isEmpty() || newValue == null) {
-                            return true;
+                keyword_textfield.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(parentsSearchModel -> {
+                    if (newValue.isBlank() || newValue.isEmpty()) {
+                        return true;
 
-                        }
+                    }
 
-                        String searchkeyword = newValue.toLowerCase();
-                        if (parentsSearchModel.getFirst_name().toLowerCase().indexOf(searchkeyword)> -1) {
-                            return true;
-                        }
-                        else if (parentsSearchModel.getLast_name().toLowerCase().indexOf(searchkeyword)> -1) {
-                            return true;
-                        }
-                        else if (parentsSearchModel.getPhone().toLowerCase().indexOf(searchkeyword)> -1) {
-                            return true;
-                        }
-                        else
-                        return false;
-                    });
-
-
-                });
+                    String searchkeyword = newValue.toLowerCase();
+                    if (parentsSearchModel.getFirst_name().toLowerCase().contains(searchkeyword)) {
+                        return true;
+                    }
+                    else if (parentsSearchModel.getLast_name().toLowerCase().contains(searchkeyword)) {
+                        return true;
+                    }
+                    else if (parentsSearchModel.getPhone().toLowerCase().contains(searchkeyword)) {
+                        return true;
+                    }
+                    else
+                    return false;
+                }));
                 SortedList<ParentsSearchModel> sortedList = new SortedList<>(filteredList);
                 sortedList.comparatorProperty().bind(parents_tableview.comparatorProperty());
 
@@ -105,7 +101,8 @@ public class ShowParentsController implements Initializable {
 
 
 
-        }catch (SQLException e){
+        }
+        catch (SQLException e){
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE,null,e);
             e.printStackTrace();
         }

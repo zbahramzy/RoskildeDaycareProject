@@ -13,6 +13,7 @@ public class DatabaseConnection {
 
     // constructors
     public DatabaseConnection() {}
+
     public DatabaseConnection(PreparedStatement pstmt, PreparedStatement psInsert, PreparedStatement psCheckUserExists, ResultSet rs) {
         this.pstmt = pstmt;
         this.psInsert = psInsert;

@@ -2,11 +2,14 @@ package com.example.ui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -34,6 +37,8 @@ public class ShowRoomsController implements Initializable {
     private TableColumn<ShowRoomsObjects, String> teacher_firstname_column;
     @FXML
     private TableColumn<ShowRoomsObjects, String> teacher_lastname_column;
+    @FXML
+    private TextField filter_textfield;
 
     ObservableList<ShowRoomsObjects> showRoomsObjectsObservableList = FXCollections.observableArrayList();
 
@@ -53,7 +58,7 @@ public class ShowRoomsController implements Initializable {
             Statement statement = connectDB.createStatement();
             ResultSet queryOutput = statement.executeQuery(show_rooms_query);
 
-            while (queryOutput.next()){
+            while (queryOutput.next()) {
 
                 Integer query_class_id = queryOutput.getInt("class_id");
                 String query_children_firstname = queryOutput.getString("children.first_name");
@@ -62,17 +67,53 @@ public class ShowRoomsController implements Initializable {
                 String query_teacher_lastname = queryOutput.getString("employees.last_name");
 
 
-
                 showRoomsObjectsObservableList.add(new ShowRoomsObjects(query_class_id, query_children_firstname, query_children_lastname, query_teacher_firstname, query_teacher_lastname));
-
-                class_id_column.setCellValueFactory(new PropertyValueFactory<>("class_id"));
-                child_firstname_column.setCellValueFactory(new PropertyValueFactory<>("child_firstname"));
-                child_lastname_column.setCellValueFactory(new PropertyValueFactory<>("child_lastname"));
-                teacher_firstname_column.setCellValueFactory(new PropertyValueFactory<>("teacher_firstname"));
-                teacher_lastname_column.setCellValueFactory(new PropertyValueFactory<>("teacher_lastname"));
-                
-                 room_search.setItems(showRoomsObjectsObservableList);
             }
+
+            class_id_column.setCellValueFactory(new PropertyValueFactory<>("class_id"));
+            child_firstname_column.setCellValueFactory(new PropertyValueFactory<>("child_firstname"));
+            child_lastname_column.setCellValueFactory(new PropertyValueFactory<>("child_lastname"));
+            teacher_firstname_column.setCellValueFactory(new PropertyValueFactory<>("teacher_firstname"));
+            teacher_lastname_column.setCellValueFactory(new PropertyValueFactory<>("teacher_lastname"));
+
+            room_search.setItems(showRoomsObjectsObservableList);
+
+            //its filter our search
+            FilteredList<ShowRoomsObjects> filteredList = new FilteredList<>(showRoomsObjectsObservableList, p -> true);
+            filter_textfield.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(ShowRoomsObject -> {
+                    if (newValue.isBlank() || newValue.isEmpty()) {
+                        return true;
+
+                    }
+                    String searchkeyword = newValue.toLowerCase();
+                    if (ShowRoomsObject.getChild_firstname().toLowerCase().contains(searchkeyword)) {
+                        return true;
+                    }
+                    else if (ShowRoomsObject.getChild_lastname().toLowerCase().indexOf(searchkeyword)> -1) {
+                        return true;
+                    }
+                    else if (ShowRoomsObject.getTeacher_firstname().toLowerCase().indexOf(searchkeyword)> -1) {
+                        return true;
+                    }
+                    else if (ShowRoomsObject.getTeacher_lastname().toLowerCase().contains(searchkeyword)) {
+                        return true;
+                    }
+                    else
+                        return false;
+                });
+
+
+            });
+            SortedList<ShowRoomsObjects> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(room_search.comparatorProperty());
+
+            //apply filtered and sorted list to tableview
+            room_search.setItems(sortedList);
+
+
+
+
 
 
         } catch (Exception e){
