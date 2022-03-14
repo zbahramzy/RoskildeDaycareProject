@@ -44,13 +44,11 @@ public class ShowRoomsController implements Initializable {
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
 
-        String show_rooms_query = "Select class_id,children.first_name,children.last_name,employees.first_name,employees.last_name\n" +
-                "FROM classes,children,employees\n" +
+        String show_rooms_query = "Select classes.class_id, children.first_name, children.last_name, employees.first_name, employees.last_name\n" +
+                "FROM daycare.classes, daycare.children, daycare.employees\n" +
                 "WHERE classes.child_id = children.child_id\n" +
-                "AND classes.employee_id = employees.employee_id\n" +
+                "AND classes.employee_id = daycare.employees.employee_id\n" +
                 "ORDER BY class_id;";
-
-
         try {
             Statement statement = connectDB.createStatement();
             ResultSet queryOutput = statement.executeQuery(show_rooms_query);

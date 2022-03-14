@@ -13,16 +13,17 @@ import java.io.IOException;
 public class Utils {
 
     // connect to database
-    private static Connection connect = null;
+    /*private static Connection connect = null;
     private static String url = System.getenv("url");
     private static String username = System.getenv("username");
     private static String password = System.getenv("password");
+     */
 
     // communicate to database
-    private static PreparedStatement pstmt = null;
-    private static PreparedStatement psInsert = null;
-    private static PreparedStatement psCheckUserExists = null;
-    private static ResultSet rs = null;
+    // private static PreparedStatement pstmt = null;
+    // private static PreparedStatement psInsert = null;
+    // private static PreparedStatement psCheckUserExists = null;
+    // private static ResultSet rs = null;
 
 
     public static void changeScene(ActionEvent event, String fxmlFile, String title, String username)  {
@@ -48,7 +49,7 @@ public class Utils {
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle(title);
-        stage.setScene(new Scene(root, 600, 400));
+        stage.setScene(new Scene(root, 1080, 600));
         stage.show();
     }
 
@@ -83,27 +84,33 @@ public class Utils {
 
     // logs in the user from gui
     public static void loginUser(ActionEvent event, String username, String password) {
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getDBconnection();
         try {
             // connecting to the database
-            connection();
+            //connection();
 
-            pstmt = connect.prepareStatement("SELECT password FROM daycare.users WHERE username = ?");
-            pstmt.setString(1, username);
-            rs = pstmt.executeQuery();
+            connectNow.setPstmt(connectDB.prepareStatement("SELECT password FROM daycare.users WHERE username = ?"));
+            connectNow.getPstmt().setString(1, username);
+            connectNow.setRs(connectNow.getPstmt().executeQuery());
+            connectNow.getRs();
+            //pstmt = connect.prepareStatement("SELECT password FROM daycare.users WHERE username = ?");
+            //pstmt.setString(1, username);
+            //rs = pstmt.executeQuery();
 
-            if (!rs.isBeforeFirst()) {
+            if (!connectNow.getRs().isBeforeFirst()) {
                 System.out.println("User not found");
                 Alert alert = new Alert(Alert.AlertType.ERROR, "User not found");
                 alert.show();
             } else {
-                while (rs.next()) {
-                    String retrievedPassword = rs.getString("password");
+                while (connectNow.getRs().next()) {
+                    String retrievedPassword = connectNow.getRs().getString("password");
 
                     if (retrievedPassword.equals(password)) {
                         changeScene(event, "loggedin-view.fxml", "Welcome!", username);
                     } else {
                         System.out.println("Password didn't match");
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Password didn't match");
                         alert.show();
                     }
                 }
@@ -112,58 +119,7 @@ public class Utils {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeConnection();
-        }
-    }
-
-    private static void connection() {
-        try {
-            connect = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void closeConnection() {
-
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (psCheckUserExists != null) {
-            try {
-                psCheckUserExists.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (psInsert != null) {
-            try {
-                psInsert.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (pstmt != null) {
-            try {
-                pstmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (connect != null) {
-            try {
-                connect.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            connectNow.closeConnection();
         }
     }
 }
