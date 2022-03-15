@@ -63,7 +63,7 @@ public class ShowParentsController implements Initializable {
         Connection connectDB = Connectnow2.getDBconnection();
 
 
-        String parents_query = "SELECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM parents;";
+        String parents_query = "SELECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM daycare.parents;";
 
 
 //set action on query and make a tableview
@@ -139,7 +139,7 @@ public class ShowParentsController implements Initializable {
     private void handle_waitinglist(ActionEvent event) {
         DatabaseConnection Connectnow3 = new DatabaseConnection();
         Connection connectDB1 = Connectnow3.getDBconnection();
-        String waiting_list_query = "SElECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM parents left join relations on parents.parent_id=relations.parent_id join waiting_list on waiting_list.child_id=relations.child_id where relations.child_id=waiting_list.child_id;";
+        String waiting_list_query = "SElECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM daycare.parents left join daycare.relations on parents.parent_id=relations.parent_id join daycare.waiting_list on waiting_list.child_id=relations.child_id where relations.child_id=waiting_list.child_id;";
 
         try {
             Statement statement = connectDB1.createStatement();
