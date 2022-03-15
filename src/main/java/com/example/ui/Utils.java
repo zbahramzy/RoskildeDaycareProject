@@ -12,20 +12,7 @@ import java.io.IOException;
 
 public class Utils {
 
-    // connect to database
-    private static Connection connect = null;
-    private static String url = System.getenv("url");
-    private static String username = System.getenv("username");
-    private static String password = System.getenv("password");
-
-    // communicate to database
-    private static PreparedStatement pstmt = null;
-    private static PreparedStatement psInsert = null;
-    private static PreparedStatement psCheckUserExists = null;
-    private static ResultSet rs = null;
-
-
-    public static void changeScene(ActionEvent event, String fxmlFile, String title, String username) {
+    public static void changeScene(ActionEvent event, String fxmlFile, String title, String username)  {
 
         Parent root = null;
 
@@ -52,58 +39,35 @@ public class Utils {
         stage.show();
     }
 
-    /*
-    public static void signUpUser(ActionEvent event, String username, String password, String favTeacher) {
-        try {
-            connection();
-            psCheckUserExists = connect.prepareStatement("SELECT * FROM company.users WHERE username = ?");
-            psCheckUserExists.setString(1, username);
-            rs = psCheckUserExists.executeQuery();
-
-            if (rs.isBeforeFirst()) {
-                System.out.println("User already exixts");
-                Alert alert = new Alert(Alert.AlertType.ERROR, "User already exists");
-                alert.show();
-            } else {
-                psInsert = connect.prepareStatement("INSERT INTO company.users(username, password, favTeacher) VALUES (?, ?, ?)");
-                psInsert.setString(1, username);
-                psInsert.setString(2, password);
-                psInsert.setString(3, favTeacher);
-                psInsert.executeUpdate();
-
-                changeScene(event, "logged-in.fxml", "Welcome!", username, favTeacher);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-        }
-    }
-     */
-
     // logs in the user from gui
     public static void loginUser(ActionEvent event, String username, String password) {
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getDBconnection();
         try {
             // connecting to the database
-            connection();
+            //connection();
 
-            pstmt = connect.prepareStatement("SELECT password FROM daycare.users WHERE username = ?");
-            pstmt.setString(1, username);
-            rs = pstmt.executeQuery();
+            connectNow.setPstmt(connectDB.prepareStatement("SELECT password FROM daycare.users WHERE username = ?"));
+            connectNow.getPstmt().setString(1, username);
+            connectNow.setRs(connectNow.getPstmt().executeQuery());
+            connectNow.getRs();
+            //pstmt = connect.prepareStatement("SELECT password FROM daycare.users WHERE username = ?");
+            //pstmt.setString(1, username);
+            //rs = pstmt.executeQuery();
 
-            if (!rs.isBeforeFirst()) {
+            if (!connectNow.getRs().isBeforeFirst()) {
                 System.out.println("User not found");
                 Alert alert = new Alert(Alert.AlertType.ERROR, "User not found");
                 alert.show();
             } else {
-                while (rs.next()) {
-                    String retrievedPassword = rs.getString("password");
+                while (connectNow.getRs().next()) {
+                    String retrievedPassword = connectNow.getRs().getString("password");
 
                     if (retrievedPassword.equals(password)) {
                         changeScene(event, "loggedin-view.fxml", "Welcome!", username);
                     } else {
                         System.out.println("Password didn't match");
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Password didn't match");
                         alert.show();
                     }
                 }
@@ -112,58 +76,7 @@ public class Utils {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeConnection();
-        }
-    }
-
-    public static void connection() {
-        try {
-            connect = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void closeConnection() {
-
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (psCheckUserExists != null) {
-            try {
-                psCheckUserExists.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (psInsert != null) {
-            try {
-                psInsert.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (pstmt != null) {
-            try {
-                pstmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (connect != null) {
-            try {
-                connect.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            connectNow.closeConnection();
         }
     }
 }
