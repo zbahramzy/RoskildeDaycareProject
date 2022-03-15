@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -10,7 +11,7 @@
 <AnchorPane prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.ShowRoomsController">
    <children>
       <Button fx:id="back_to_loggedin_button" layoutX="943.0" layoutY="30.0" mnemonicParsing="false" text="Go Back" />
-      <TableView fx:id="room_search" layoutX="140.0" layoutY="81.0" prefHeight="477.0" prefWidth="759.0">
+      <TableView fx:id="room_search" layoutX="140.0" layoutY="85.0" prefHeight="477.0" prefWidth="883.0">
         <columns>
           <TableColumn fx:id="class_id_column" prefWidth="75.0" text="Class ID" />
           <TableColumn fx:id="child_firstname_column" prefWidth="152.0" text="Child Name" />
@@ -19,7 +20,9 @@
             <TableColumn fx:id="teacher_lastname_column" prefWidth="211.0" text="Teacher Surname" />
         </columns>
       </TableView>
-      <Label layoutX="94.0" layoutY="34.0" text="Filter" />
+      <Label layoutX="56.0" layoutY="34.0" text="Filter" />
       <TextField fx:id="filter_textfield" layoutX="140.0" layoutY="30.0" prefHeight="25.0" prefWidth="686.0" />
+      <RadioButton layoutX="37.0" layoutY="93.0" mnemonicParsing="false" text="Teacher" />
+      <RadioButton layoutX="37.0" layoutY="126.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="92.0" text="Children" />
    </children>
 </AnchorPane>
