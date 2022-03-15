@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.LoggedInController">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.LoggedInController">
     <Label fx:id="welcome_label" layoutX="285.0" layoutY="192.0" text="Welcome" />
     <Button fx:id="logout_button" layoutX="507.0" layoutY="26.0" mnemonicParsing="false" text="Logout" />
    <Button fx:id="go_to_show_children_button" layoutX="33.0" layoutY="39.0" mnemonicParsing="false" text="Show Children" />

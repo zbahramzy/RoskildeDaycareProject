@@ -52,34 +52,7 @@ public class Utils {
         stage.show();
     }
 
-    /*
-    public static void signUpUser(ActionEvent event, String username, String password, String favTeacher) {
-        try {
-            connection();
-            psCheckUserExists = connect.prepareStatement("SELECT * FROM company.users WHERE username = ?");
-            psCheckUserExists.setString(1, username);
-            rs = psCheckUserExists.executeQuery();
 
-            if (rs.isBeforeFirst()) {
-                System.out.println("User already exixts");
-                Alert alert = new Alert(Alert.AlertType.ERROR, "User already exists");
-                alert.show();
-            } else {
-                psInsert = connect.prepareStatement("INSERT INTO company.users(username, password, favTeacher) VALUES (?, ?, ?)");
-                psInsert.setString(1, username);
-                psInsert.setString(2, password);
-                psInsert.setString(3, favTeacher);
-                psInsert.executeUpdate();
-
-                changeScene(event, "logged-in.fxml", "Welcome!", username, favTeacher);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-        }
-    }
-     */
 
     // logs in the user from gui
     public static void loginUser(ActionEvent event, String username, String password) {
