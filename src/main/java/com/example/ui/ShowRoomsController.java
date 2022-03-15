@@ -21,8 +21,10 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class ShowRoomsController implements Initializable {
+
+    //Declaring FXML connectors
+
     @FXML
     private Button back_to_loggedin_button;
     @FXML
@@ -40,21 +42,29 @@ public class ShowRoomsController implements Initializable {
     @FXML
     private TextField filter_textfield;
 
+    //Setting Observable List
+
     ObservableList<ShowRoomsObjects> showRoomsObjectsObservableList = FXCollections.observableArrayList();
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Button to go back
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
 
+        //Create Connection
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
 
+        //SQL query
         String show_rooms_query = "Select classes.class_id, children.first_name, children.last_name, employees.first_name, employees.last_name\n" +
                 "FROM daycare.classes, daycare.children, daycare.employees\n" +
                 "WHERE classes.child_id = children.child_id\n" +
                 "AND classes.employee_id = daycare.employees.employee_id\n" +
                 "ORDER BY class_id;";
         try {
+
             Statement statement = connectDB.createStatement();
             ResultSet queryOutput = statement.executeQuery(show_rooms_query);
 
@@ -80,6 +90,7 @@ public class ShowRoomsController implements Initializable {
 
             //its filter our search
             FilteredList<ShowRoomsObjects> filteredList = new FilteredList<>(showRoomsObjectsObservableList, p -> true);
+
             filter_textfield.textProperty().addListener((observable, oldValue, newValue) -> {
                 filteredList.setPredicate(ShowRoomsObject -> {
                     if (newValue.isBlank() || newValue.isEmpty()) {
@@ -90,10 +101,10 @@ public class ShowRoomsController implements Initializable {
                     if (ShowRoomsObject.getChild_firstname().toLowerCase().contains(searchkeyword)) {
                         return true;
                     }
-                    else if (ShowRoomsObject.getChild_lastname().toLowerCase().indexOf(searchkeyword)> -1) {
+                    else if (ShowRoomsObject.getChild_lastname().toLowerCase().contains(searchkeyword)) {
                         return true;
                     }
-                    else if (ShowRoomsObject.getTeacher_firstname().toLowerCase().indexOf(searchkeyword)> -1) {
+                    else if (ShowRoomsObject.getTeacher_firstname().toLowerCase().contains(searchkeyword)) {
                         return true;
                     }
                     else if (ShowRoomsObject.getTeacher_lastname().toLowerCase().contains(searchkeyword)) {
@@ -111,20 +122,8 @@ public class ShowRoomsController implements Initializable {
             //apply filtered and sorted list to tableview
             room_search.setItems(sortedList);
 
-
-
-
-
-
         } catch (Exception e){
             e.printStackTrace();
         }
-
-
-
     }
-
-
-
-
 }
