@@ -10,19 +10,20 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.ShowRoomsController">
    <children>
-      <Button fx:id="back_to_loggedin_button" layoutX="943.0" layoutY="30.0" mnemonicParsing="false" text="Go Back" />
+      <Button fx:id="back_to_loggedin_button" layoutX="954.0" layoutY="30.0" mnemonicParsing="false" text="Go Back" />
       <TableView fx:id="room_search" layoutX="140.0" layoutY="85.0" prefHeight="477.0" prefWidth="883.0">
         <columns>
           <TableColumn fx:id="class_id_column" prefWidth="75.0" text="Class ID" />
           <TableColumn fx:id="child_firstname_column" prefWidth="152.0" text="Child Name" />
             <TableColumn fx:id="child_lastname_column" prefWidth="148.0" text="Child Surname" />
-            <TableColumn fx:id="teacher_firstname_column" minWidth="0.0" prefWidth="172.0" text="Teacher Name" />
-            <TableColumn fx:id="teacher_lastname_column" prefWidth="211.0" text="Teacher Surname" />
+            <TableColumn fx:id="employee_firstname_column" minWidth="0.0" prefWidth="172.0" text="Teacher Name" />
+            <TableColumn fx:id="employee_lastname_column" prefWidth="211.0" text="Teacher Surname" />
         </columns>
       </TableView>
       <Label layoutX="56.0" layoutY="34.0" text="Filter" />
       <TextField fx:id="filter_textfield" layoutX="140.0" layoutY="30.0" prefHeight="25.0" prefWidth="686.0" />
-      <RadioButton layoutX="37.0" layoutY="93.0" mnemonicParsing="false" text="Teacher" />
-      <RadioButton layoutX="37.0" layoutY="126.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="92.0" text="Children" />
+      <RadioButton fx:id="teacher_radio_button" layoutX="37.0" layoutY="93.0" mnemonicParsing="false" text="Teacher" />
+      <RadioButton fx:id="children_radio_button" layoutX="37.0" layoutY="126.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="92.0" text="Children" />
+      <Button fx:id="print_button" layoutX="893.0" layoutY="31.0" mnemonicParsing="false" onAction="#print" text="Print" />
    </children>
 </AnchorPane>

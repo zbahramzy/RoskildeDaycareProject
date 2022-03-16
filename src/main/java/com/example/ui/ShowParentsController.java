@@ -33,7 +33,6 @@ public class ShowParentsController implements Initializable {
     private Button print_parents;
     @FXML
     private TableView<ParentsSearchModel> parents_tableview;
-
     @FXML
     private TableColumn<ParentsSearchModel, Integer> id_parents_coulumn;
     @FXML
@@ -164,7 +163,7 @@ public class ShowParentsController implements Initializable {
 
             parents_tableview.setItems(parentsSearchModelObservableList);
 
-                //print pdf of result of the query
+            //print pdf of result of the query
             FilteredList<ParentsSearchModel> filteredList = new FilteredList<>(parentsSearchModelObservableList, p -> true);
             keyword_textfield.textProperty().addListener((observable, oldValue, newValue) -> {
                 filteredList.setPredicate(parentsSearchModel -> {
@@ -198,6 +197,7 @@ public class ShowParentsController implements Initializable {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void back_all(ActionEvent event) {
         parentsSearchModelObservableList.clear();
@@ -259,38 +259,36 @@ public class ShowParentsController implements Initializable {
     }
 
 
+    @FXML
+    private void print(ActionEvent event) {
+        //print the tableview
 
+        Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
 
-        @FXML
-        private void print (ActionEvent event){
-            //print the tableview
+        //get printer text responsive
 
-            Printer printer = Printer.getDefaultPrinter();
-            PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
+        double scaleX = pageLayout.getPrintableWidth() / parents_tableview.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / parents_tableview.getBoundsInParent().getHeight();
+        scaleX = scaleX > 1 ? 1 : scaleX;
+        scaleY = scaleY > 1 ? 1 : scaleY;
+        //open logo on the top of the tableview
+        FileInputStream inputStream = null;
 
-            //get printer text responsive
+        //make the table looks good on print
+        parents_tableview.getTransforms().add(new Scale(scaleX, scaleY));
+        //print the tableview
+        PrinterJob job = PrinterJob.createPrinterJob();
 
-            double scaleX = pageLayout.getPrintableWidth() / parents_tableview.getBoundsInParent().getWidth();
-            double scaleY = pageLayout.getPrintableHeight() / parents_tableview.getBoundsInParent().getHeight();
-            scaleX = scaleX > 1 ? 1 : scaleX;
-            scaleY = scaleY > 1 ? 1 : scaleY;
-            //open logo on the top of the tableview
-            FileInputStream inputStream = null;
-
-            //make the table looks good on print
-            parents_tableview.getTransforms().add(new Scale(scaleX, scaleY));
-            //print the tableview
-            PrinterJob job = PrinterJob.createPrinterJob();
-
-            if (job != null) {
-                boolean printed = job.printPage(pageLayout, parents_tableview);
-                if (printed) {
-                    job.endJob();
-                }
+        if (job != null) {
+            boolean printed = job.printPage(pageLayout, parents_tableview);
+            if (printed) {
+                job.endJob();
             }
         }
-
-
     }
+
+
+}
 
 
