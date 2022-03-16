@@ -18,7 +18,12 @@
             </TableView>
             <Button fx:id="print_parents" layoutX="1031.0" layoutY="62.0" mnemonicParsing="false" onAction="#print" text="Print" />
             <TextField fx:id="keyword_textfield" layoutX="179.0" layoutY="28.0" prefHeight="25.0" prefWidth="893.0" />
-            <RadioButton fx:id="parents_waiting_list" layoutX="51.0" layoutY="61.0" mnemonicParsing="false" onAction="#handle_waitinglist" prefHeight="27.0" prefWidth="180.0" text="Waiting List">
+            <RadioButton fx:id="parents_all" layoutX="52.0" layoutY="65.0" mnemonicParsing="false" onAction="#back_all" text="All">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="parents_waiting_list" layoutX="179.0" layoutY="61.0" mnemonicParsing="false" onAction="#handle_waitinglist" prefHeight="27.0" prefWidth="180.0" text="Waiting List">
                <font>
                   <Font size="14.0" />
                </font></RadioButton>

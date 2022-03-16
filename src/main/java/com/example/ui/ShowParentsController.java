@@ -46,6 +46,8 @@ public class ShowParentsController implements Initializable {
     private TextField keyword_textfield;
     @FXML
     private RadioButton parents_waiting_list;
+    @FXML
+    private RadioButton parents_all;
 
     ObservableList<ParentsSearchModel> parentsSearchModelObservableList = FXCollections.observableArrayList();
 
@@ -55,6 +57,7 @@ public class ShowParentsController implements Initializable {
 
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
         parents_waiting_list.setOnAction(event -> handle_waitinglist(event));
+        parents_all.setOnAction(event -> back_all(event));
         print_parents.setCancelButton(true);
         parents_tableview.setEditable(true);
 
@@ -137,75 +140,157 @@ public class ShowParentsController implements Initializable {
 
     @FXML
     private void handle_waitinglist(ActionEvent event) {
+        parentsSearchModelObservableList.clear();
+
         DatabaseConnection Connectnow3 = new DatabaseConnection();
         Connection connectDB1 = Connectnow3.getDBconnection();
         String waiting_list_query = "SElECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM daycare.parents left join daycare.relations on parents.parent_id=relations.parent_id join daycare.waiting_list on waiting_list.child_id=relations.child_id where relations.child_id=waiting_list.child_id;";
 
         try {
             Statement statement = connectDB1.createStatement();
-            ResultSet waiting_list_queryoutput = statement.executeQuery(waiting_list_query);
-            while (waiting_list_queryoutput.next()) {
-                //print pdf of result of the query
-
-
-
-
-
+            ResultSet queryoutput = statement.executeQuery(waiting_list_query);
+            while (queryoutput.next()) {
+                Integer id_parents_coulumn = queryoutput.getInt("parent_id");
+                String firstname_parents_column = queryoutput.getString("first_name");
+                String lastname_parents_column = queryoutput.getString("last_name");
+                String phone = queryoutput.getString("phone");
+                //publish the observable list
+                parentsSearchModelObservableList.add(new ParentsSearchModel(id_parents_coulumn, firstname_parents_column, lastname_parents_column, phone));
             }
+            id_parents_coulumn.setCellValueFactory(new PropertyValueFactory<>("parent_id"));
+            firstname_parents_column.setCellValueFactory(new PropertyValueFactory<>("first_name"));
+            lastname_parents_column.setCellValueFactory(new PropertyValueFactory<>("last_name"));
+            phone_parents_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+            parents_tableview.setItems(parentsSearchModelObservableList);
+
+                //print pdf of result of the query
+            FilteredList<ParentsSearchModel> filteredList = new FilteredList<>(parentsSearchModelObservableList, p -> true);
+            keyword_textfield.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(parentsSearchModel -> {
+                    if (newValue.isBlank() || newValue.isEmpty() || newValue == null) {
+                        return true;
+
+                    }
+
+                    String searchkeyword = newValue.toLowerCase();
+                    if (parentsSearchModel.getFirst_name().toLowerCase().indexOf(searchkeyword) > -1) {
+                        return true;
+                    } else if (parentsSearchModel.getLast_name().toLowerCase().indexOf(searchkeyword) > -1) {
+                        return true;
+                    } else if (parentsSearchModel.getPhone().toLowerCase().indexOf(searchkeyword) > -1) {
+                        return true;
+                    } else
+                        return false;
+                });
 
 
+            });
+            SortedList<ParentsSearchModel> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(parents_tableview.comparatorProperty());
+
+            //apply filtered and sorted list to tableview
+            parents_tableview.setItems(sortedList);
 
 
-
-
-
-
-
-
-
-            //show waiting_list on radiobuttom
         } catch (SQLException e) {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
-        //run radio buttem on parents waiting list with connection of sql
-
     }
     @FXML
-    private void print(ActionEvent event) {
-        //print the tableview
+    private void back_all(ActionEvent event) {
+        parentsSearchModelObservableList.clear();
+        DatabaseConnection Connectnow4 = new DatabaseConnection();
+        Connection connectDB2 = Connectnow4.getDBconnection();
+        String queryoutput = "SELECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM daycare.parents;";
 
-        Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
-        //high quality print
-
-
-
-
-        //get printer text responsive
-
-        double scaleX = pageLayout.getPrintableWidth() / parents_tableview.getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / parents_tableview.getBoundsInParent().getHeight();
-        scaleX = scaleX > 1 ? 1 : scaleX;
-        scaleY = scaleY > 1 ? 1 : scaleY;
-        //open logo on the top of the tableview
-        FileInputStream inputStream = null;
-
-
-
-        //make the table looks good on print
-        parents_tableview.getTransforms().add(new Scale(scaleX, scaleY));
-        //print the tableview
-        PrinterJob job = PrinterJob.createPrinterJob();
-
-        if (job != null) {
-            boolean printed = job.printPage(pageLayout, parents_tableview);
-            if (printed) {
-                job.endJob();
+        try {
+            Statement statement = connectDB2.createStatement();
+            ResultSet query = statement.executeQuery(queryoutput);
+            while (query.next()) {
+                Integer id_parents_coulumn = query.getInt("parent_id");
+                String firstname_parents_column = query.getString("first_name");
+                String lastname_parents_column = query.getString("last_name");
+                String phone = query.getString("phone");
+                //publish the observable list
+                parentsSearchModelObservableList.add(new ParentsSearchModel(id_parents_coulumn, firstname_parents_column, lastname_parents_column, phone));
             }
+            id_parents_coulumn.setCellValueFactory(new PropertyValueFactory<>("parent_id"));
+            firstname_parents_column.setCellValueFactory(new PropertyValueFactory<>("first_name"));
+            lastname_parents_column.setCellValueFactory(new PropertyValueFactory<>("last_name"));
+            phone_parents_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+            parents_tableview.setItems(parentsSearchModelObservableList);
+
+            //print pdf of result of the query
+            FilteredList<ParentsSearchModel> filteredList = new FilteredList<>(parentsSearchModelObservableList, p -> true);
+            keyword_textfield.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(parentsSearchModel -> {
+                    if (newValue.isBlank() || newValue.isEmpty() || newValue == null) {
+                        return true;
+
+                    }
+
+                    String searchkeyword = newValue.toLowerCase();
+                    if (parentsSearchModel.getFirst_name().toLowerCase().indexOf(searchkeyword) > -1) {
+                        return true;
+                    } else if (parentsSearchModel.getLast_name().toLowerCase().indexOf(searchkeyword) > -1) {
+                        return true;
+                    } else if (parentsSearchModel.getPhone().toLowerCase().indexOf(searchkeyword) > -1) {
+                        return true;
+                    } else
+                        return false;
+                });
+
+
+            });
+            SortedList<ParentsSearchModel> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(parents_tableview.comparatorProperty());
+
+            //apply filtered and sorted list to tableview
+            parents_tableview.setItems(sortedList);
+
+
+        } catch (SQLException e) {
+            Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
+            e.printStackTrace();
         }
     }
 
 
+
+
+        @FXML
+        private void print (ActionEvent event){
+            //print the tableview
+
+            Printer printer = Printer.getDefaultPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
+
+            //get printer text responsive
+
+            double scaleX = pageLayout.getPrintableWidth() / parents_tableview.getBoundsInParent().getWidth();
+            double scaleY = pageLayout.getPrintableHeight() / parents_tableview.getBoundsInParent().getHeight();
+            scaleX = scaleX > 1 ? 1 : scaleX;
+            scaleY = scaleY > 1 ? 1 : scaleY;
+            //open logo on the top of the tableview
+            FileInputStream inputStream = null;
+
+            //make the table looks good on print
+            parents_tableview.getTransforms().add(new Scale(scaleX, scaleY));
+            //print the tableview
+            PrinterJob job = PrinterJob.createPrinterJob();
+
+            if (job != null) {
+                boolean printed = job.printPage(pageLayout, parents_tableview);
+                if (printed) {
+                    job.endJob();
+                }
             }
+        }
+
+
+    }
+
 
