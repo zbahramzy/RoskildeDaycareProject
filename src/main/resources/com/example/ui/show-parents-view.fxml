@@ -22,8 +22,11 @@
                <font>
                   <Font size="14.0" />
                </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="toggle_group" />
+               </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="parents_waiting_list" layoutX="179.0" layoutY="61.0" mnemonicParsing="false" onAction="#handle_waitinglist" prefHeight="27.0" prefWidth="180.0" text="Waiting List">
+            <RadioButton fx:id="parents_waiting_list" layoutX="179.0" layoutY="61.0" mnemonicParsing="false" onAction="#handle_waitinglist" prefHeight="27.0" prefWidth="180.0" text="Waiting List" toggleGroup="$toggle_group">
                <font>
                   <Font size="14.0" />
                </font></RadioButton>
