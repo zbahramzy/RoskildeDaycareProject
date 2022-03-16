@@ -88,13 +88,13 @@ public class ShowEmployeesController implements Initializable {
                         return true;
                     }
 
-                    String searchkeyword = newValue.toLowerCase();
+                    String search_keyword = newValue.toLowerCase();
 
-                    if (Employee.getFirst_name().toLowerCase().indexOf(searchkeyword)> -1) {
+                    if (Employee.getFirst_name().toLowerCase().indexOf(search_keyword) > -1) {
                         return true;
-                    } else if (Employee.getLast_name().toLowerCase().indexOf(searchkeyword)> -1) {
+                    } else if (Employee.getLast_name().toLowerCase().indexOf(search_keyword) > -1) {
                         return true;
-                    } else if (Employee.getPhone().toLowerCase().indexOf(searchkeyword)> -1) {
+                    } else if (Employee.getPhone().toLowerCase().indexOf(search_keyword) > -1) {
                         return true;
                     } else
                         return false;

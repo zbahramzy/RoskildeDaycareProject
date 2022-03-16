@@ -4,14 +4,31 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.LogInController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.LogInController">
    <children>
-      <Button fx:id="login_button" layoutX="550.0" layoutY="403.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="100.0" text="Log in" />
-      <TextField fx:id="username_text_field" layoutX="570.0" layoutY="280.0" />
-      <PasswordField fx:id="password_field" layoutX="570.0" layoutY="338.0" />
-      <Label layoutX="493.0" layoutY="284.0" text="Username" />
-      <Label layoutX="495.0" layoutY="342.0" text="Password" />
+      <ImageView fitHeight="500.0" fitWidth="500.0" layoutX="384.0" layoutY="-56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/roskildedaycare.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="login_button" layoutX="573.0" layoutY="530.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="100.0" text="Log in">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <TextField fx:id="username_text_field" layoutX="548.0" layoutY="378.0" />
+      <PasswordField fx:id="password_field" layoutX="548.0" layoutY="436.0" />
+      <Label layoutX="461.0" layoutY="379.0" text="Username">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label layoutX="464.0" layoutY="437.0" text="Password">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>

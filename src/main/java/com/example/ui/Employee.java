@@ -8,12 +8,12 @@ public class Employee {
     private String phone;
     private String title;
     // constructor
-    public Employee(int employee_id, String first_name, String last_name, String phone, String title) {
-        this.employee_id = employee_id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.phone = phone;
-        this.title = title;
+    Employee(int employee_id, String first_name, String last_name, String phone_number, String title) {
+        setEmployee_id(employee_id);
+        setFirst_name(first_name);
+        setLast_name(last_name);
+        setPhone(phone_number);
+        setTitle(title);
     }
     // getters
     public int getEmployee_id() {
