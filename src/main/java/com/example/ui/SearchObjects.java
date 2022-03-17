@@ -31,6 +31,12 @@ public class SearchObjects {
         this.parent_phone = parent_phone;
     }
 
+    public SearchObjects(String child_firstname, String child_lastname, LocalDate child_date_of_birth) {
+        this.child_firstname = child_firstname;
+        this.child_lastname = child_lastname;
+        this.child_date_of_birth = child_date_of_birth;
+    }
+
     public SearchObjects(Integer class_id, Integer parent_id, Integer employee_id, String child_firstname, String child_lastname, String parent_firstname, String parent_lastname, String parent_phone, String employee_firstname, String employee_lastname, String employee_phone, String employee_title) {
         this.class_id = class_id;
         this.parent_id = parent_id;
@@ -135,11 +141,14 @@ public class SearchObjects {
                 ", parent_phone='" + parent_phone + '\'' +
                 '}';
     }
+
+
     public String toString2() {
-        return "Firstname='" + parent_firstname + '\'' +
-                ", Lastname='" + parent_lastname + '\'' +
-                ", Date of Birth='" + parent_phone + '\'' +
-                ' ';
+        return "SearchObjects{" +
+                "child_firstname='" + child_firstname + '\'' +
+                ", child_lastname='" + child_lastname + '\'' +
+                ", child_date_of_birth=" + child_date_of_birth +
+                '}';
     }
 }
 
