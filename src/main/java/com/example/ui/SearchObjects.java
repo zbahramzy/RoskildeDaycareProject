@@ -135,6 +135,12 @@ public class SearchObjects {
                 ", parent_phone='" + parent_phone + '\'' +
                 '}';
     }
+    public String toString2() {
+        return "Firstname='" + parent_firstname + '\'' +
+                ", Lastname='" + parent_lastname + '\'' +
+                ", Date of Birth='" + parent_phone + '\'' +
+                ' ';
+    }
 }
 
 
