@@ -13,31 +13,31 @@
          <Image url="@images/login.png" />
       </image>
    </ImageView>
-    <Label fx:id="welcome_label" layoutX="507.0" layoutY="100.0" text="Welcome" AnchorPane.bottomAnchor="533.0" AnchorPane.leftAnchor="507.0" AnchorPane.rightAnchor="490.0" AnchorPane.topAnchor="100.0">
+    <Label fx:id="welcome_label" layoutX="358.0" layoutY="288.0" prefHeight="67.0" prefWidth="266.0" text="Welcome" textFill="#0f123f" AnchorPane.bottomAnchor="345.0" AnchorPane.leftAnchor="358.0" AnchorPane.rightAnchor="576.0" AnchorPane.topAnchor="288.0">
       <font>
-         <Font name="Comic Sans MS" size="48.0" />
+         <Font size="48.0" />
       </font></Label>
-    <Button fx:id="logout_button" layoutX="569.0" layoutY="316.0" mnemonicParsing="false" text="Logout">
+    <Button fx:id="logout_button" layoutX="857.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="172.0" style="-fx-background-color: #0f123f;" text="Logout" textFill="WHITE">
       <font>
          <Font size="18.0" />
       </font></Button>
-   <Button fx:id="go_to_show_children_button" layoutX="129.0" layoutY="235.0" mnemonicParsing="false" text="Show Children">
+   <Button fx:id="go_to_show_children_button" layoutX="514.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="172.0" style="-fx-background-color: #0f123f;" text="Show Children" textFill="WHITE">
       <font>
          <Font size="18.0" />
       </font></Button>
-   <Button fx:id="go_to_show_parents_button" layoutX="408.0" layoutY="237.0" mnemonicParsing="false" text="Show Parents">
+   <Button fx:id="go_to_show_parents_button" mnemonicParsing="false" prefHeight="90.0" prefWidth="172.0" style="-fx-background-color: #0f123f;" text="Show Parents" textFill="WHITE">
       <font>
          <Font size="18.0" />
       </font></Button>
-   <Button fx:id="go_to_show_employees_button" layoutX="722.0" layoutY="233.0" mnemonicParsing="false" text="Show Employees">
+   <Button fx:id="go_to_show_employees_button" layoutX="172.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="172.0" style="-fx-background-color: #0f123f;" text="Show Employees" textFill="WHITE">
       <font>
          <Font size="18.0" />
       </font></Button>
-   <Button fx:id="go_to_show_rooms_button" layoutX="972.0" layoutY="235.0" mnemonicParsing="false" text="Show Rooms">
+   <Button fx:id="go_to_show_rooms_button" layoutX="344.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="172.0" style="-fx-background-color: #0f123f;" text="Show Rooms" textFill="WHITE">
       <font>
          <Font size="18.0" />
       </font></Button>
-   <Button fx:id="go_to_add_to_database_button" layoutX="129.0" layoutY="315.0" mnemonicParsing="false" text="Add to Database">
+   <Button fx:id="go_to_add_to_database_button" layoutX="686.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="171.0" style="-fx-background-color: #0f123f;" text="Add to Database" textFill="WHITE">
       <font>
          <Font size="18.0" />
       </font>
