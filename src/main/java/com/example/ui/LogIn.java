@@ -18,6 +18,7 @@ public class LogIn extends Application {
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+        scene.getStylesheets().add("src/main/java/com/example/ui/cssparents.css");
 
     }
 

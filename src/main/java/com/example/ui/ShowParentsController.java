@@ -1,6 +1,7 @@
 package com.example.ui;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -9,11 +10,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.*;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 import org.w3c.dom.events.MouseEvent;
@@ -55,6 +59,9 @@ public class ShowParentsController implements Initializable {
 
     @FXML
             private ToggleGroup toggle_group;
+    @FXML
+    private VBox vbox;
+    private Parent fxml;
 
     ObservableList<ParentsSearchModel> parentsSearchModelObservableList = FXCollections.observableArrayList();
 
@@ -62,11 +69,14 @@ public class ShowParentsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
+
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
         parents_waiting_list.setOnAction(event -> handle_waitinglist(event));
         parents_all.setOnAction(event -> back_all(event));
         print_parents.setCancelButton(true);
         parents_tableview.setEditable(true);
+
 
 
         DatabaseConnection Connectnow2 = new DatabaseConnection();
@@ -264,6 +274,10 @@ public class ShowParentsController implements Initializable {
             e.printStackTrace();
         }
     }
+    //when hover over the tableview show the sql query that is being executed
+
+
+
 
 
 

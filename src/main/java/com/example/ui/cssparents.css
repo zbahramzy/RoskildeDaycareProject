@@ -1,0 +1,13 @@
+.table_view_parents {
+  border: 1px solid #fd4f3e;
+  border-collapse: collapse;
+  -fx-background-color: #3cfd48;
+  -fx-border-color: #fd4f3e;
+  -fx-border-width: 1px;
+  -fx-border-radius: 5px;
+  -fx-padding: 10px;
+  -fx-font-size: 14px;
+  -fx-font-family: "Arial";
+}
+
+
