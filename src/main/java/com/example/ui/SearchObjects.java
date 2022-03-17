@@ -143,13 +143,7 @@ public class SearchObjects {
     }
 
 
-    public String toString2() {
-        return "SearchObjects{" +
-                "child_firstname='" + child_firstname + '\'' +
-                ", child_lastname='" + child_lastname + '\'' +
-                ", child_date_of_birth=" + child_date_of_birth +
-                '}';
-    }
+
 }
 
 
