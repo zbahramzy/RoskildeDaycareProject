@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 
@@ -269,7 +270,7 @@ public class ShowParentsController implements Initializable {
             sortedList.comparatorProperty().bind(parents_tableview.comparatorProperty());
 
             //apply filtered and sorted list to tableview
-            parents_tableview.setItems(sortedList);
+
 
 
         } catch (SQLException e) {
@@ -282,7 +283,8 @@ public class ShowParentsController implements Initializable {
     private void mouse_over(MouseEvent event){
         ParentsSearchModel selected_parents = parents_tableview.getSelectionModel().getSelectedItem();
         if(selected_parents != null){
-            screen.setText("ID: "+selected_parents.getParent_id()+"\n"+"First Name: "+selected_parents.getFirst_name()+"\n"+"Last Name: "+selected_parents.getLast_name()+"\n"+"Phone: "+selected_parents.getPhone());
+
+            screen.setText(" ID: "+"\n"+ selected_parents.getParent_id()+"\n"+" First Name: "+selected_parents.getFirst_name()+"\n"+" Last Name: "+selected_parents.getLast_name()+"\n"+" Phone: "+selected_parents.getPhone());
         }
         else{
             screen.setText("");
@@ -310,28 +312,60 @@ public class ShowParentsController implements Initializable {
 
         @FXML
         private void print (ActionEvent event){
-            //print the tableview
+            //print the tableview and the screen
 
             Printer printer = Printer.getDefaultPrinter();
             PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
 
-            //get printer text responsive
 
+            //get printer text responsive
+            //include the screen on tableview
             double scaleX = pageLayout.getPrintableWidth() / parents_tableview.getBoundsInParent().getWidth();
             double scaleY = pageLayout.getPrintableHeight() / parents_tableview.getBoundsInParent().getHeight();
+            double scaleX1= pageLayout.getPrintableWidth() / screen.getBoundsInParent().getWidth();
+            double scaleY1= pageLayout.getPrintableHeight() / screen.getBoundsInParent().getHeight();
+
+
+
+
             scaleX = scaleX > 1 ? 1 : scaleX;
             scaleY = scaleY > 1 ? 1 : scaleY;
+            scaleX1 = scaleX1 > 1 ? 1 : scaleX1;
+            scaleY1 = scaleY1 > 1 ? 1 : scaleY1;
             //open logo on the top of the tableview
             FileInputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream("src/main/resources/com/example/ui/images/login.png");
+
+            }
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            Image image = new Image(inputStream);
+            //put the logo on the top of the tableview
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(pageLayout.getPrintableWidth());
+            imageView.setFitHeight(pageLayout.getPrintableHeight());
+            imageView.setPreserveRatio(true);
+            imageView.setSmooth(true);
+            imageView.setCache(true);
+
+
 
             //make the table looks good on print
+            //show the image on the top of the tableview
             parents_tableview.getTransforms().add(new Scale(scaleX, scaleY));
+            screen.getTransforms().add(new Scale(scaleX1, scaleY1));
+
+
+
             //print the tableview
             PrinterJob job = PrinterJob.createPrinterJob();
 
             if (job != null) {
                 boolean printed = job.printPage(pageLayout, parents_tableview);
-                if (printed) {
+                boolean printed1 = job.printPage(pageLayout, screen);
+                if (printed && printed1) {
                     job.endJob();
                 }
             }
