@@ -2,26 +2,55 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.ShowChildrenController">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@../../../../java/com/example/ui/cssparents.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.ShowChildrenController">
    <children>
-      <Button fx:id="back_to_loggedin_button" layoutX="14.0" layoutY="42.0" mnemonicParsing="false" text="Go Back" />
-      <TableView fx:id="table_view_show_children" layoutY="75.0" prefHeight="524.0" prefWidth="800.0">
-        <columns>
-          <TableColumn fx:id="table_column_id_children_table" prefWidth="64.79998624324799" text="ID" />
-          <TableColumn fx:id="table_column_first_name_children_table" prefWidth="255.99998474121094" text="FIRST NAME" />
-            <TableColumn fx:id="table_column_last_name_children_table" prefWidth="252.0" text="LAST NAME" />
-            <TableColumn fx:id="table_column_date_of_birth_children_table" prefWidth="226.39996337890625" text="DATE OF BIRTH" />
-        </columns>
-      </TableView>
-      <Label layoutX="23.0" layoutY="14.0" text="SEARCH" />
-      <TextField fx:id="text_field_search" layoutX="81.0" layoutY="10.0" prefHeight="26.0" prefWidth="707.0" />
-      <ToggleButton fx:id="toggle_button_waiting_list" layoutX="696.0" layoutY="42.0" mnemonicParsing="false" text="WAITING LIST" />
-
+      <Pane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #0f123f;" stylesheets="@../../../../java/com/example/ui/cssparents.css">
+         <children>
+            <TableView fx:id="table_view_show_children" layoutX="52.0" layoutY="156.0" onMouseClicked="#mouse_clicked_select_row" prefHeight="376.0" prefWidth="1020.0" style="-fx-border-color: #6db784;" styleClass="table_view_parents" stylesheets="@../../../../java/com/example/ui/cssparents.css">
+              <columns>
+                <TableColumn fx:id="table_column_id_children_table" prefWidth="141.20000457763672" style="-fx-background-color: #6db784;" text="ID" />
+                <TableColumn fx:id="table_column_first_name_children_table" prefWidth="282.4000244140625" text="First Name" />
+                  <TableColumn fx:id="table_column_last_name_children_table" minWidth="0.0" prefWidth="304.7999572753906" text="Last Name" />
+                  <TableColumn fx:id="table_column_date_of_birth_children_table" prefWidth="290.800048828125" text="Date of Birth" />
+              </columns>
+            </TableView>
+            <Button fx:id="button_print_children" layoutX="952.0" layoutY="85.0" mnemonicParsing="false" onAction="#print" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f9e45b;" text="Print">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <TextField fx:id="text_field_search" layoutX="187.0" layoutY="28.0" prefHeight="25.0" prefWidth="885.0" />
+            <RadioButton fx:id="radio_button_children_all" layoutX="52.0" layoutY="95.0" mnemonicParsing="false" onAction="#back_all" style="-fx-region-border: #6db784;" text="All" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="toggle_group" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radio_button_children_waiting_list" layoutX="187.0" layoutY="91.0" mnemonicParsing="false" onAction="#handle_waiting_list" prefHeight="27.0" prefWidth="180.0" text="Waiting List" textFill="WHITE" toggleGroup="$toggle_group">
+               <font>
+                  <Font size="14.0" />
+               </font></RadioButton>
+            <Button fx:id="back_to_loggedin_button" layoutX="952.0" layoutY="615.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f9e45b;" text="Go Back">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <Label layoutX="52.0" layoutY="27.0" prefHeight="27.0" prefWidth="152.0" text="Search Children" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="text_field_display" layoutX="52.0" layoutY="561.0" prefHeight="25.0" prefWidth="1020.0" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

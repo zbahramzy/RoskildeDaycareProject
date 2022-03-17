@@ -25,6 +25,12 @@ public class SearchObjects {
         this.employee_lastname = employee_lastname;
     }
 
+    public SearchObjects(String parent_firstname, String parent_lastname, String parent_phone) {
+        this.parent_firstname = parent_firstname;
+        this.parent_lastname = parent_lastname;
+        this.parent_phone = parent_phone;
+    }
+
     public SearchObjects(Integer class_id, Integer parent_id, Integer employee_id, String child_firstname, String child_lastname, String parent_firstname, String parent_lastname, String parent_phone, String employee_firstname, String employee_lastname, String employee_phone, String employee_title) {
         this.class_id = class_id;
         this.parent_id = parent_id;
@@ -120,6 +126,14 @@ public class SearchObjects {
     }
     public void setEmployee_title(String employee_title) {
         this.employee_title = employee_title;
+    }
+
+    @Override
+    public String toString() {
+        return "parent_firstname='" + parent_firstname + '\'' +
+                ", parent_lastname='" + parent_lastname + '\'' +
+                ", parent_phone='" + parent_phone + '\'' +
+                '}';
     }
 }
 

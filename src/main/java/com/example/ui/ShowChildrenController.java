@@ -1,14 +1,21 @@
 package com.example.ui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.print.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.transform.Scale;
 
+import java.io.FileInputStream;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.Connection;
@@ -16,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.time.ZoneId;
 import java.util.Locale;
@@ -26,6 +34,8 @@ import java.util.logging.Logger;
 public class ShowChildrenController implements Initializable {
     @FXML
     private Button back_to_loggedin_button;
+    @FXML
+    private Button button_print_children;
     @FXML
     private TableView<ChildrenData> table_view_show_children;
     @FXML
@@ -39,11 +49,15 @@ public class ShowChildrenController implements Initializable {
     @FXML
     private TextField text_field_search;
     @FXML
-    private ToggleButton toggle_button_waiting_list;
+    private RadioButton radio_button_children_all;
+    @FXML
+    private RadioButton radio_button_children_waiting_list;
+    @FXML
+    private ToggleGroup toggle_group;
+    @FXML
+    private TextField text_field_display;
 
     ObservableList<ChildrenData> childrenDataObservableList = FXCollections.observableArrayList();
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -51,24 +65,27 @@ public class ShowChildrenController implements Initializable {
 
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
+        String query = "SELECT children.child_id, children.first_name, children.last_name, children.date_of_birth, waiting_order_id, start_year\n" +
+                "    FROM children\n" +
+                "    LEFT JOIN waiting_list wl on children.child_id = wl.child_id\n" +
+                "    LEFT JOIN enrollments e on children.child_id = e.child_id;";
 
         try {
             Statement statement = connectDB.createStatement();
-            ResultSet queryOutput = statement.executeQuery("SELECT * FROM children;");
-//            String query = "SELECT children.child_id, children.first_name, children.last_name, children.date_of_birth, waiting_order_id, start_year\n" +
-//                    "    FROM children\n" +
-//                    "    LEFT JOIN waiting_list wl on children.child_id = wl.child_id\n" +
-//                    "    LEFT JOIN enrollments e on children.child_id = e.child_id;";
+            ResultSet queryOutput = statement.executeQuery(query);
 
 
             while (queryOutput.next()) {
                 Integer child_id = queryOutput.getInt("child_id");
                 String first_name = queryOutput.getString("first_name");
                 String last_name = queryOutput.getString("last_name");
-
-               String date1 = queryOutput.getString("date_of_birth");
-               String[] date2 = date1.split("-");
-               LocalDate date_of_birth = LocalDate.of(Integer.valueOf(date2[0]), Integer.valueOf(date2[1]), Integer.valueOf(date2[2]));
+                //getting and converting date
+                String date1 = queryOutput.getString("date_of_birth");
+                String[] date2 = date1.split("-");
+                LocalDate date_of_birth = LocalDate.of(Integer.valueOf(date2[0]), Integer.valueOf(date2[1]), Integer.valueOf(date2[2]));
+                String is_enrolled_value = queryOutput.getString("start_year");
+//                Boolean is_enrolled = false;
+//                if(is_enrolled_value != null) { is_enrolled = true; }
 
                 childrenDataObservableList.add(new ChildrenData(child_id, first_name, last_name, date_of_birth));
 
@@ -76,8 +93,6 @@ public class ShowChildrenController implements Initializable {
                 table_column_first_name_children_table.setCellValueFactory(new PropertyValueFactory<>("firstName"));
                 table_column_last_name_children_table.setCellValueFactory(new PropertyValueFactory<>("lastName"));
                 table_column_date_of_birth_children_table.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
-
-                table_view_show_children.setItems(childrenDataObservableList);
 
                 FilteredList<ChildrenData> filteredData = new FilteredList<>(childrenDataObservableList, b -> true);
 
@@ -104,23 +119,213 @@ public class ShowChildrenController implements Initializable {
                         }
                     });
                 });
-
                 SortedList<ChildrenData> sortedData = new SortedList<>(filteredData);
                 // bind sorted results with Table View
                 sortedData.comparatorProperty().bind(table_view_show_children.comparatorProperty());
                 // apply sorting
                 table_view_show_children.setItems(sortedData);
             }
-
-
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+    @FXML
+    private void handle_waiting_list(ActionEvent event) {
+        childrenDataObservableList.clear();
+
+        DatabaseConnection Connectnow2 = new DatabaseConnection();
+        Connection connectDB2 = Connectnow2.getDBconnection();
+        String query = "SELECT children.child_id, children.first_name, children.last_name, children.date_of_birth, waiting_order_id\n" +
+                "    FROM children\n" +
+                "    JOIN waiting_list wl on children.child_id = wl.child_id;";
+
+        try {
+            Statement statement = connectDB2.createStatement();
+            ResultSet queryOutput = statement.executeQuery(query);
+            while (queryOutput.next()) {
+                Integer child_id = queryOutput.getInt("child_id");
+                String first_name = queryOutput.getString("first_name");
+                String last_name = queryOutput.getString("last_name");
+                //getting and converting date
+                String date1 = queryOutput.getString("date_of_birth");
+                String[] date2 = date1.split("-");
+                LocalDate date_of_birth = LocalDate.of(Integer.valueOf(date2[0]), Integer.valueOf(date2[1]), Integer.valueOf(date2[2]));
+                //publish the observable list
+
+                childrenDataObservableList.add(new ChildrenData(child_id, first_name, last_name, date_of_birth));
 
 
+                table_column_id_children_table.setCellValueFactory(new PropertyValueFactory<>("id"));
+                table_column_first_name_children_table.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+                table_column_last_name_children_table.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+                table_column_date_of_birth_children_table.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
+
+                FilteredList<ChildrenData> filteredData = new FilteredList<>(childrenDataObservableList, b -> true);
+
+                text_field_search.textProperty().addListener((observable, oldValue, newValue) -> filteredData.setPredicate(childrenData -> {
+
+                //no search value
+                if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if (childrenData.getFirstName().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true; //no match in first name
+                } else if (childrenData.getLastName().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true; //no match in last name
+                } else if (childrenData.getId().toString().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true; //no match in Id
+                } else if (childrenData.getDateOfBirth().toString().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true; //no match in BirthDate
+                } else {
+                    return false; //no match at all
+                }
+                }));
+                SortedList<ChildrenData> sortedData = new SortedList<>(filteredData);
+                // bind sorted results with Table View
+                sortedData.comparatorProperty().bind(table_view_show_children.comparatorProperty());
+                // apply sorting
+                table_view_show_children.setItems(sortedData);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void back_all(ActionEvent event) {
+        childrenDataObservableList.clear();
+
+        DatabaseConnection Connectnow3 = new DatabaseConnection();
+        Connection connectDB3 = Connectnow3.getDBconnection();
+        String query = "SELECT children.child_id, children.first_name, children.last_name, children.date_of_birth\n" +
+                "    FROM children;";
+
+        try {
+            Statement statement = connectDB3.createStatement();
+            ResultSet queryOutput = statement.executeQuery(query);
+            while (queryOutput.next()) {
+                Integer child_id = queryOutput.getInt("child_id");
+                String first_name = queryOutput.getString("first_name");
+                String last_name = queryOutput.getString("last_name");
+                //getting and converting date
+                String date1 = queryOutput.getString("date_of_birth");
+                String[] date2 = date1.split("-");
+                LocalDate date_of_birth = LocalDate.of(Integer.valueOf(date2[0]), Integer.valueOf(date2[1]), Integer.valueOf(date2[2]));
+                //publish the observable list
+
+                childrenDataObservableList.add(new ChildrenData(child_id, first_name, last_name, date_of_birth));
 
 
+                table_column_id_children_table.setCellValueFactory(new PropertyValueFactory<>("id"));
+                table_column_first_name_children_table.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+                table_column_last_name_children_table.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+                table_column_date_of_birth_children_table.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
 
+                FilteredList<ChildrenData> filteredData = new FilteredList<>(childrenDataObservableList, b -> true);
 
+                text_field_search.textProperty().addListener((observable, oldValue, newValue) -> filteredData.setPredicate(childrenData -> {
+
+                    //no search value
+                    if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                        return true;
+                    }
+
+                    String searchKeyword = newValue.toLowerCase();
+
+                    if (childrenData.getFirstName().toLowerCase().indexOf(searchKeyword) > -1) {
+                        return true; //no match in first name
+                    } else if (childrenData.getLastName().toLowerCase().indexOf(searchKeyword) > -1) {
+                        return true; //no match in last name
+                    } else if (childrenData.getId().toString().toLowerCase().indexOf(searchKeyword) > -1) {
+                        return true; //no match in Id
+                    } else if (childrenData.getDateOfBirth().toString().toLowerCase().indexOf(searchKeyword) > -1) {
+                        return true; //no match in BirthDate
+                    } else {
+                        return false; //no match at all
+                    }
+                }));
+                SortedList<ChildrenData> sortedData = new SortedList<>(filteredData);
+                // bind sorted results with Table View
+                sortedData.comparatorProperty().bind(table_view_show_children.comparatorProperty());
+                // apply sorting
+                table_view_show_children.setItems(sortedData);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void print (ActionEvent event){
+        //print the tableview
+
+        Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
+
+        //get printer text responsive
+
+        double scaleX = pageLayout.getPrintableWidth() / table_view_show_children.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / table_view_show_children.getBoundsInParent().getHeight();
+        scaleX = scaleX > 1 ? 1 : scaleX;
+        scaleY = scaleY > 1 ? 1 : scaleY;
+        //open logo on the top of the tableview
+        FileInputStream inputStream = null;
+
+        //make the table looks good on print
+        table_view_show_children.getTransforms().add(new Scale(scaleX, scaleY));
+        //print the tableview
+        PrinterJob job = PrinterJob.createPrinterJob();
+
+        if (job != null) {
+            boolean printed = job.printPage(pageLayout, table_view_show_children);
+            if (printed) {
+                job.endJob();
+            }
+        }
+    }
+
+    @FXML
+    private void mouse_clicked_select_row(MouseEvent event){
+        ChildrenData selectedChildrenData = table_view_show_children.getSelectionModel().getSelectedItem();
+        if(selectedChildrenData != null){
+            DatabaseConnection Connectnow4 = new DatabaseConnection();
+            Connection connectDB4 = Connectnow4.getDBconnection();
+            String query = "SELECT parents.first_name, parents.last_name, parents.phone FROM parents\n" +
+                    "    JOIN relations r on parents.parent_id = r.parent_id\n" +
+                    "    RIGHT JOIN children c on r.child_id = c.child_id\n" +
+                    "    WHERE c.child_id =" + selectedChildrenData.getId() + ";";
+            ArrayList<SearchObjects> parentsToDisplay = new ArrayList<>();
+
+            try {
+                Statement statement = connectDB4.createStatement();
+                ResultSet queryOutput = statement.executeQuery(query);
+                while (queryOutput.next()) {
+                    String parent_firstname = queryOutput.getString("parents.first_name");
+                    String parent_lasttname = queryOutput.getString("parents.last_name");
+                    String parent_phone = queryOutput.getString("parents.phone");
+
+                    SearchObjects parent = new SearchObjects(parent_firstname, parent_lasttname, parent_phone);
+                    parentsToDisplay.add(parent);
+                }
+            }catch (SQLException e) {
+                Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
+                e.printStackTrace();
+            }
+            String textToDisplay;
+            StringBuilder sb = new StringBuilder();
+            for (SearchObjects sO : parentsToDisplay
+                 ) { sb.append(sO.toString());
+
+            }
+            text_field_display.setText(sb.toString());
+        }
+        else{
+            text_field_display.setText("");
+        }
     }
 }

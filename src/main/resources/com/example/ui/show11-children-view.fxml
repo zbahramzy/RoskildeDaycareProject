@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.ShowChildrenController">
+   <children>
+      <Button fx:id="back_to_loggedin_button" layoutX="14.0" layoutY="42.0" mnemonicParsing="false" text="Go Back" />
+      <TableView fx:id="table_view_show_children" layoutY="75.0" prefHeight="524.0" prefWidth="800.0">
+        <columns>
+          <TableColumn fx:id="table_column_id_children_table" prefWidth="64.79998624324799" text="ID" />
+          <TableColumn fx:id="table_column_first_name_children_table" prefWidth="255.99998474121094" text="FIRST NAME" />
+            <TableColumn fx:id="table_column_last_name_children_table" prefWidth="252.0" text="LAST NAME" />
+            <TableColumn fx:id="table_column_date_of_birth_children_table" prefWidth="226.39996337890625" text="DATE OF BIRTH" />
+        </columns>
+      </TableView>
+      <Label layoutX="23.0" layoutY="14.0" text="SEARCH" />
+      <TextField fx:id="text_field_search" layoutX="81.0" layoutY="10.0" prefHeight="26.0" prefWidth="707.0" />
+      <RadioButton fx:id="radio_button_waiting_list" layoutX="115.0" layoutY="46.0" mnemonicParsing="false" text="Waiting list" />
+
+   </children>
+</AnchorPane>
