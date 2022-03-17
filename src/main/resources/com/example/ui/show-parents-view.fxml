@@ -20,7 +20,7 @@
                <font>
                   <Font size="18.0" />
                </font></Button>
-            <TextField fx:id="screen" layoutX="52.0" layoutY="561.0" mouseTransparent="true" prefHeight="25.0" prefWidth="1020.0" />
+            <TextField fx:id="screen" layoutX="52.0" layoutY="561.0" mouseTransparent="true" prefHeight="25.0" prefWidth="1020.0" style="-fx-background-color: #ffffff;" />
             <TextField fx:id="keyword_textfield" layoutX="179.0" layoutY="28.0" prefHeight="25.0" prefWidth="893.0" />
             <RadioButton fx:id="parents_all" layoutX="52.0" layoutY="95.0" mnemonicParsing="false" onAction="#back_all" style="-fx-region-border: #6db784;" text="All" textFill="WHITE">
                <font>
