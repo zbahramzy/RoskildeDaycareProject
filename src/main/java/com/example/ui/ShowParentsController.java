@@ -17,10 +17,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
-import org.w3c.dom.events.MouseEvent;
 
 import javax.xml.transform.Result;
 import java.io.FileInputStream;
@@ -53,9 +53,12 @@ public class ShowParentsController implements Initializable {
     @FXML
     private TextField keyword_textfield;
     @FXML
+    private TextField screen;
+    @FXML
     private RadioButton parents_waiting_list;
     @FXML
     private RadioButton parents_all;
+
 
     @FXML
             private ToggleGroup toggle_group;
@@ -274,7 +277,20 @@ public class ShowParentsController implements Initializable {
             e.printStackTrace();
         }
     }
-    //when hover over the tableview show the sql query that is being executed
+    //when hover over the tableview show the information about that person
+    @FXML
+    private void mouse_over(MouseEvent event){
+        ParentsSearchModel selected_parents = parents_tableview.getSelectionModel().getSelectedItem();
+        if(selected_parents != null){
+            screen.setText("ID: "+selected_parents.getParent_id()+"\n"+"First Name: "+selected_parents.getFirst_name()+"\n"+"Last Name: "+selected_parents.getLast_name()+"\n"+"Phone: "+selected_parents.getPhone());
+        }
+        else{
+            screen.setText("");
+        }
+    }
+
+
+
 
 
 
