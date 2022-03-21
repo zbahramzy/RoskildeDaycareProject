@@ -32,6 +32,8 @@ public class LoggedInController implements Initializable {
     private Button go_to_show_rooms_button;
     @FXML
     private Button go_to_add_to_database_button;
+    @FXML
+    private Button go_to_add_user_to_database_button;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -42,6 +44,7 @@ public class LoggedInController implements Initializable {
         go_to_show_employees_button.setOnAction(event -> Utils.changeScene(event, "show-employees-view.fxml", "Show Employees", null));
         go_to_show_rooms_button.setOnAction(event -> Utils.changeScene(event, "show-rooms-view.fxml", "Show Rooms", null));
         go_to_add_to_database_button.setOnAction(event -> AddToDatabaseController.ggg());
+        //go_to_add_user_to_database_button.setOnAction(event -> );
 
     }
 
