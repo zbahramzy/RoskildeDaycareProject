@@ -25,7 +25,7 @@ public class SearchObjects {
         this.employee_lastname = employee_lastname;
     }
 
-    public void SearchObjects2(String employee_firstname, String employee_lastname, String employee_phone, String employee_title, Integer employee_id) {
+    public SearchObjects(String employee_firstname, String employee_lastname, String employee_phone, String employee_title, Integer employee_id) {
         this.employee_firstname = employee_firstname;
         this.employee_lastname = employee_lastname;
         this.employee_phone = employee_phone;

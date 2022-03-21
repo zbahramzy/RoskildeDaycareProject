@@ -291,9 +291,9 @@ public class ShowParentsController implements Initializable {
         if(selected_parents != null){
             DatabaseConnection Connectnow4 = new DatabaseConnection();
             Connection connectDB4 = Connectnow4.getDBconnection();
-            String queryoutput = " SELECT children.first_name, children.last_name, children.date_of_birth from children\n" +
-                    "                       left JOIN relations r on children.child_id = r.child_id\n" +
-                    "                        JOIN  parents on r.parent_id = parents.parent_id \n" +
+            String queryoutput = " SELECT children.first_name, children.last_name, children.date_of_birth from daycare.children\n" +
+                    "                       left JOIN daycare.relations r on children.child_id = r.child_id\n" +
+                    "                        JOIN  daycare.parents on r.parent_id = parents.parent_id \n" +
                     "                      WHERE parents.parent_id ="+selected_parents.getParent_id()+";";
             ArrayList<String> childrenDesplay = new ArrayList<>();
             try {

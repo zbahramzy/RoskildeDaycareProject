@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -11,33 +13,54 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.ShowEmployeesController">
    <children>
-      <Pane layoutX="-4.0" layoutY="-1.0" prefHeight="700.0" prefWidth="1200.0">
+      <Pane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #0f123f;" stylesheets="@../../../../java/com/example/ui/cssparents.css">
          <children>
-            <TableView fx:id="employees_tableview" layoutX="103.0" layoutY="106.0" prefHeight="502.0" prefWidth="1020.0">
+            <TableView fx:id="employees_tableview" layoutX="52.0" layoutY="156.0" prefHeight="402.0" prefWidth="800.0">
               <columns>
-                <TableColumn fx:id="employee_id_table_column" prefWidth="90.86235046386719" text="ID" />
-                <TableColumn fx:id="employee_firstname_table_column" prefWidth="232.6605224609375" text="First Name" />
-                  <TableColumn fx:id="employee_lastname_table_column" prefWidth="292.8394775390625" text="Last Name" />
-                  <TableColumn fx:id="employee_phone_table_column" prefWidth="231.40826416015625" text="Phone Number" />
-                  <TableColumn fx:id="employee_title_table_column" prefWidth="174.07818603515625" text="Title" />
+                <TableColumn fx:id="employee_id_table_column" prefWidth="65.18156433105469" style="-fx-background-color: #6db784;" text="ID" />
+                <TableColumn fx:id="employee_firstname_table_column" prefWidth="189.75340270996094" text="First Name" />
+                  <TableColumn fx:id="employee_lastname_table_column" prefWidth="198.74661254882812" text="Last Name" />
+                  <TableColumn fx:id="employee_phone_table_column" prefWidth="213.09930419921875" text="Phone Number" />
+                  <TableColumn fx:id="employee_title_table_column" prefWidth="135.5343017578125" text="Title" />
               </columns>
             </TableView>
-            <TextField fx:id="keyword_textfield" layoutX="258.0" layoutY="24.0" prefHeight="35.0" prefWidth="778.0" />
-            <Button fx:id="back_to_loggedin_button" layoutX="1036.0" layoutY="635.0" mnemonicParsing="false" text="Go Back">
+            <TextField fx:id="keyword_textfield" layoutX="205.0" layoutY="28.0" prefHeight="25.0" prefWidth="867.0" />
+            <Button fx:id="back_to_loggedin_button" layoutX="952.0" layoutY="523.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f9e45b;" text="Go Back">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="print_button" layoutX="1059.0" layoutY="24.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Print">
+            <Button fx:id="print_button" layoutX="952.0" layoutY="85.0" mnemonicParsing="false" onAction="#print" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f9e45b;" text="Print">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Label layoutX="107.0" layoutY="30.0" text="Search Employees">
+            <Label layoutX="52.0" layoutY="27.0" prefHeight="27.0" prefWidth="152.0" text="Search Employees" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
+            <Label fx:id="my_date_label" alignment="CENTER" layoutX="872.0" layoutY="206.0" prefHeight="30.0" prefWidth="200.0" text="Date" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="my_date_picker" layoutX="872.0" layoutY="156.0" onAction="#getDate" prefHeight="30.0" prefWidth="200.0" promptText="Enter a date" />
+            <RadioButton fx:id="all_employees" layoutX="205.0" layoutY="95.0" mnemonicParsing="false" onAction="#show_all_employees" prefHeight="25.0" prefWidth="125.0" text="All" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="working" layoutX="295.0" layoutY="95.0" mnemonicParsing="false" onAction="#get_working_employees" prefHeight="25.0" prefWidth="125.0" text="Woriking" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="holiday" layoutX="425.0" layoutY="95.0" mnemonicParsing="false" onAction="#get_employees_on_holiday" prefHeight="25.0" prefWidth="120.0" text="Holiday" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </RadioButton>
          </children>
       </Pane>
    </children>
