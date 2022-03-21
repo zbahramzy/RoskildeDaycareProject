@@ -20,7 +20,7 @@ public class LogIn extends Application {
         stage.show();
         scene.getStylesheets().add("src/main/java/com/example/ui/cssparents.css");
 
-//        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("add_to_database.fxml"));
+//        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("add_family.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
 //        stage.setScene(scene);
 //        stage.show();

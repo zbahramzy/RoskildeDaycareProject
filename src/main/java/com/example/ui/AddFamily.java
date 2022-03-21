@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AddToDatabaseController implements Initializable {
+public class AddFamily implements Initializable {
 
     @FXML
     private TextField child_first_name_textfield;
@@ -60,23 +60,21 @@ public class AddToDatabaseController implements Initializable {
 //        cancel_button.setOnAction(actionEvent -> stage.close());
     }
 
-    public static void ggg() {
+    public static void AddFamily() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(AddToDatabaseController.class.getResource("add_to_database.fxml"));
+            fxmlLoader.setLocation(AddFamily.class.getResource("add_family.fxml"));
             /*
              * if "fx:controller" is not set in fxml
              * fxmlLoader.setController(NewWindowController);
              */
             Scene scene = new Scene(fxmlLoader.load(), 500, 500);
             Stage add = new Stage();
-            add.setTitle("Add to Database");
+            add.setTitle("Add Family");
             add.setScene(scene);
             add.show();
-
-
         } catch (IOException e) {
-            Logger logger = Logger.getLogger(AddToDatabaseController.class.getName());
+            Logger logger = Logger.getLogger(AddFamily.class.getName());
             logger.log(Level.SEVERE, "Failed to create new Window.", e);
         }
 
@@ -95,9 +93,6 @@ public class AddToDatabaseController implements Initializable {
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
         go = true;
-//        childid=null;
-//        parent1id=null;
-//        parent2id=null;
 
         //Check if all Textboxes are filled
         if (go) {
