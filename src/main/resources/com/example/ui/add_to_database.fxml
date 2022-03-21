@@ -74,7 +74,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="23.0" prefWidth="154.0" text="Parent 1 Last Name" GridPane.rowIndex="8">
+            <Label prefHeight="23.0" prefWidth="191.0" text="Parent 2 Phone Number" GridPane.rowIndex="8">
                <font>
                   <Font size="18.0" />
                </font>
@@ -82,7 +82,7 @@
             <TextField fx:id="parent_2_first_name_textfield" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="parent_2_last_name_textfield" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <TextField fx:id="parent_2_phone_number_textfield" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <DatePicker fx:id="child_date_of_birth_datepicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DatePicker fx:id="child_date_of_birth_datepicker" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <Button fx:id="add_to_db_button" layoutX="292.0" layoutY="433.0" mnemonicParsing="false" onAction="#add_to_db_action" text="Add">

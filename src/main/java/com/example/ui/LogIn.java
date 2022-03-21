@@ -13,12 +13,18 @@ public class LogIn extends Application {
         //creat a new scene for the parent window
 
 
-        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("login-view.fxml"));
+         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
         scene.getStylesheets().add("src/main/java/com/example/ui/cssparents.css");
+
+//        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("add_to_database.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+//        stage.setScene(scene);
+//        stage.show();
+
 
     }
 
