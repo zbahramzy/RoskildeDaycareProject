@@ -13,6 +13,12 @@ public class ParentsSearchModel {
         this.phone = phone;
     }
 
+    public ParentsSearchModel(String first_name, String last_name, String phone) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.phone = phone;
+    }
+
     public Integer getParent_id() {
         return parent_id;
     }
@@ -43,5 +49,14 @@ public class ParentsSearchModel {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "Child Info " +
+                "first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", Date Of Birth'" + phone + '\'' +
+                ' ';
     }
 }

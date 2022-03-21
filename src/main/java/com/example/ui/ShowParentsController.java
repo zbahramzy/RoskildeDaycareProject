@@ -303,7 +303,7 @@ public class ShowParentsController implements Initializable {
                     String firstname_children_column = query.getString("first_name");
                     String lastname_children_column = query.getString("last_name");
                     String date_of_birth = query.getString("date_of_birth");
-                    SearchObjects childobject= new SearchObjects(firstname_children_column,lastname_children_column,date_of_birth);
+                    ParentsSearchModel childobject= new ParentsSearchModel(firstname_children_column,lastname_children_column,date_of_birth);
                     childrenDesplay.add(childobject.toString());
 
                 }
