@@ -53,10 +53,10 @@ public class ParentsSearchModel {
 //this my todtring for show the information in the table-soheil table
     @Override
     public String toString() {
-        return "Child Info " +
-                "first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", Date Of Birth'" + phone + '\'' +
+        return
+                "                                             FIRST NAME='" + first_name + '\'' +
+                "                                             LAST NAME='" + last_name + '\'' +
+                "                                             DATE OF BIRTH='" + phone + '\'' +
                 ' ';
     }
 }
