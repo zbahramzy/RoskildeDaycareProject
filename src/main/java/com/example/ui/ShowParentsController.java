@@ -7,30 +7,37 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.print.*;
+import javafx.scene.CacheHint;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import javax.xml.transform.Result;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -79,6 +86,10 @@ public class ShowParentsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        //make the initialize method to be animated when the page is loaded
+
+
+
 
 
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
@@ -96,7 +107,8 @@ public class ShowParentsController implements Initializable {
         String parents_query = "SELECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM daycare.parents;";
 
 
-//set action on query and make a tableview
+
+
 
 
         //String waiting_list_query="SElECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM parents" +
@@ -163,7 +175,12 @@ public class ShowParentsController implements Initializable {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
+
     }
+
+
+
+
 
     @FXML
     private void handle_waitinglist(ActionEvent event) {
@@ -224,6 +241,14 @@ public class ShowParentsController implements Initializable {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
+//make a parents_table work with vbox and animated transition and fade in
+
+
+
+
+
+
+
     }
     @FXML
     private void back_all(ActionEvent event) {
@@ -283,7 +308,10 @@ public class ShowParentsController implements Initializable {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
-    }
+ }
+
+
+
     //when hover over the tableview show the information about that person
     @FXML
     private void mouse_over(MouseEvent event){
@@ -329,18 +357,28 @@ public class ShowParentsController implements Initializable {
             screen.setStyle("-fx-border-width: 2;");
             screen.setStyle("-fx-font-size: 16;");
             screen.setStyle("-fx-font-weight: bold;");
+            //set style as animation for the text
+            FadeTransition ft = new FadeTransition(Duration.millis(1000), screen);
+
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+
+            ft.play();
+
+
 
             //make it visible everytime is clicked and desappear when clicked again
             screen.setVisible(true);
-
-            //background of the text
-            screen.setBackground(new Background(new BackgroundFill(Color.rgb(255,255,255,1), CornerRadii.EMPTY, Insets.EMPTY)));
-
+            //make vbox zoom out and zoom in
 
         }
         else{
             screen.setText("");
+
+            //chanege background to #0f123f in e
         }
+        //make translate transition for the vbox
+
     }
 
 
@@ -385,22 +423,12 @@ public class ShowParentsController implements Initializable {
             scaleX1 = scaleX1 > 1 ? 1 : scaleX1;
             scaleY1 = scaleY1 > 1 ? 1 : scaleY1;
             //open logo on the top of the tableview
-            FileInputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream("src/main/resources/com/example/ui/images/login.png");
 
-            }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            Image image = new Image(inputStream);
-            //put the logo on the top of the tableview
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(pageLayout.getPrintableWidth());
-            imageView.setFitHeight(pageLayout.getPrintableHeight());
-            imageView.setPreserveRatio(true);
-            imageView.setSmooth(true);
-            imageView.setCache(true);
+
+
+
+
+
 
 
 
@@ -408,6 +436,10 @@ public class ShowParentsController implements Initializable {
             //show the image on the top of the tableview
             parents_tableview.getTransforms().add(new Scale(scaleX, scaleY));
             screen.getTransforms().add(new Scale(scaleX1, scaleY1));
+            //set png image on the top of the print
+            //get the screen on the top of the print page
+
+
 
 
 
