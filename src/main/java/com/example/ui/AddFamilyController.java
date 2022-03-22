@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AddFamily implements Initializable {
+public class AddFamilyController implements Initializable {
 
     @FXML
     private TextField child_first_name_textfield;
@@ -63,7 +63,7 @@ public class AddFamily implements Initializable {
     public static void AddFamily() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(AddFamily.class.getResource("add_family.fxml"));
+            fxmlLoader.setLocation(AddFamilyController.class.getResource("add_family.fxml"));
             /*
              * if "fx:controller" is not set in fxml
              * fxmlLoader.setController(NewWindowController);
@@ -74,7 +74,7 @@ public class AddFamily implements Initializable {
             add.setScene(scene);
             add.show();
         } catch (IOException e) {
-            Logger logger = Logger.getLogger(AddFamily.class.getName());
+            Logger logger = Logger.getLogger(AddFamilyController.class.getName());
             logger.log(Level.SEVERE, "Failed to create new Window.", e);
         }
 
@@ -96,16 +96,15 @@ public class AddFamily implements Initializable {
 
         //Check if all Textboxes are filled
         if (go) {
-            if (!child_first_name_textfield.getText().trim().isEmpty()
-                    && !child_last_name_textfield.getText().trim().isEmpty()
-                    && !parent_1_first_name_textfield.getText().trim().isEmpty()
-                    && !parent_1_last_name_textfield.getText().trim().isEmpty()
-                    && !parent_1_phone_number_textfield.getText().trim().isEmpty()
-                    && !parent_2_first_name_textfield.getText().trim().isEmpty()
-                    && !parent_2_last_name_textfield.getText().trim().isEmpty()
-                    && !parent_2_phone_number_textfield.getText().trim().isEmpty()
-                    && child_date_of_birth_datepicker.getValue() != null) {
-            } else {
+            if (child_first_name_textfield.getText().trim().isEmpty()
+                    || child_last_name_textfield.getText().trim().isEmpty()
+                    || parent_1_first_name_textfield.getText().trim().isEmpty()
+                    || parent_1_last_name_textfield.getText().trim().isEmpty()
+                    || parent_1_phone_number_textfield.getText().trim().isEmpty()
+                    || parent_2_first_name_textfield.getText().trim().isEmpty()
+                    || parent_2_last_name_textfield.getText().trim().isEmpty()
+                    || parent_2_phone_number_textfield.getText().trim().isEmpty()
+                    || child_date_of_birth_datepicker.getValue() == null) {
                 System.out.println(child_date_of_birth_datepicker.getValue());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Please fill all info!");
                 alert.show();
@@ -290,9 +289,9 @@ public class AddFamily implements Initializable {
                 insert.executeUpdate();
             }
             //Message Child inserted
+            if (go) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Added to Database", ButtonType.CLOSE);
-            alert.show();
-
+            alert.show();}
         } catch (Exception e) {
             e.printStackTrace();
         }
