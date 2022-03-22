@@ -157,11 +157,9 @@ public class ShowEmployeesController implements Initializable {
 
     @FXML
     public void reset_date_button_handler(ActionEvent event) {
-
         my_date_picker.setValue(null);
         my_date_label.setText("Date");
         employeesObservableList.clear();
-
     }
 
     @FXML
@@ -174,7 +172,7 @@ public class ShowEmployeesController implements Initializable {
 
         // query to to get thoses employees that are at work on a given date
         String employeeViewQuery = "SELECT employees.employee_id, employees.first_name, employees.last_name, employees.phone, employees.title " +
-                "FROM daycare.employees WHERE employee_id != (SELECT employees.employee_id FROM daycare.employees " +
+                "FROM daycare.employees WHERE employee_id NOT IN (SELECT employees.employee_id FROM daycare.employees " +
                 "JOIN daycare.employee_work_schedule ON employees.employee_id=employee_work_schedule.employee_id " +
                 "JOIN daycare.work_schedule ON work_schedule.work_schedule_id=employee_work_schedule.work_schedule_id " +
                 "WHERE work_schedule.ferie_day = ?);";
