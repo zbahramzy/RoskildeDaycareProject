@@ -49,8 +49,8 @@ public class LoggedInController implements Initializable {
         go_to_show_parents_button.setOnAction(event -> Utils.changeScene(event, "show-parents-view.fxml", "Show Parents", null));
         go_to_show_employees_button.setOnAction(event -> Utils.changeScene(event, "show-employees-view.fxml", "Show Employees", null));
         go_to_show_rooms_button.setOnAction(event -> Utils.changeScene(event, "show-rooms-view.fxml", "Show Rooms", null));
-        go_to_add_to_database_button.setOnAction(event -> AddToDatabaseController.ggg());
-        //go_to_add_user_to_database_button.setOnAction(event -> );
+        go_to_add_to_database_button.setOnAction(event -> AddFamilyController.AddFamily());
+        go_to_add_user_to_database_button.setOnAction(event -> AddUserController.AddUser());
 
 
     }
