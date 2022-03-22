@@ -362,6 +362,8 @@ public class ShowParentsController implements Initializable {
 
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
+            //make a loop to show the text for 3 seconds
+
 
             ft.play();
 
