@@ -327,7 +327,6 @@ public class ShowParentsController implements Initializable {
  }
 
 
-
     //when hover over the tableview show the information about that person
     @FXML
     private void mouse_over(MouseEvent event){

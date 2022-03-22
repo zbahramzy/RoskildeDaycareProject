@@ -47,7 +47,7 @@ public class AddUserController implements Initializable {
              * if "fx:controller" is not set in fxml
              * fxmlLoader.setController(NewWindowController);
              */
-            Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+            Scene scene = new Scene(fxmlLoader.load(), 450, 320);
             Stage add = new Stage();
             add.setTitle("Add User");
             add.setScene(scene);

@@ -8,10 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.transform.Scale;
 
@@ -19,11 +16,8 @@ import java.io.FileInputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ShowRoomsController implements Initializable {
 
@@ -60,7 +54,6 @@ public class ShowRoomsController implements Initializable {
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
         print_button.setCancelButton(true);
 
-
         //Create Connection
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
@@ -83,7 +76,6 @@ public class ShowRoomsController implements Initializable {
                 String query_children_lastname = queryOutput.getString("children.last_name");
                 String query_employee_firstname = queryOutput.getString("employees.first_name");
                 String query_employee_lastname = queryOutput.getString("employees.last_name");
-
 
                 SearchObjectsObservableList.add(new SearchObjects(query_class_id, query_children_firstname, query_children_lastname, query_employee_firstname, query_employee_lastname));
             }

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.AddFamilyController">
+<AnchorPane prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #0f123f;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.AddFamilyController">
    <children>
       <GridPane layoutX="32.0" layoutY="14.0" prefHeight="384.0" prefWidth="436.0">
         <columnConstraints>
@@ -29,12 +29,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="23.0" prefWidth="144.0" text="Child First Name" textAlignment="CENTER">
+            <Label prefHeight="23.0" prefWidth="144.0" text="Child First Name" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="23.0" prefWidth="154.0" text="Child Last Name" GridPane.rowIndex="1">
+            <Label prefHeight="23.0" prefWidth="154.0" text="Child Last Name" textFill="WHITE" GridPane.rowIndex="1">
                <font>
                   <Font size="18.0" />
                </font>
@@ -44,37 +44,37 @@
             <TextField fx:id="parent_1_first_name_textfield" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="parent_1_last_name_textfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="parent_1_phone_number_textfield" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Label prefHeight="23.0" prefWidth="154.0" text="Parent 1 First Name" GridPane.rowIndex="3">
+            <Label prefHeight="23.0" prefWidth="154.0" text="Parent 1 First Name" textFill="WHITE" GridPane.rowIndex="3">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="23.0" prefWidth="154.0" text="Parent 1 Last Name" GridPane.rowIndex="4">
+            <Label prefHeight="23.0" prefWidth="154.0" text="Parent 1 Last Name" textFill="WHITE" GridPane.rowIndex="4">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="23.0" prefWidth="154.0" text="Parent 2 First Name" GridPane.rowIndex="6">
+            <Label prefHeight="23.0" prefWidth="154.0" text="Parent 2 First Name" textFill="WHITE" GridPane.rowIndex="6">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="23.0" prefWidth="154.0" text="Parent 2 Last Name" GridPane.rowIndex="7">
+            <Label prefHeight="23.0" prefWidth="154.0" text="Parent 2 Last Name" textFill="WHITE" GridPane.rowIndex="7">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="23.0" prefWidth="154.0" text="Child Date of Birth" GridPane.rowIndex="2">
+            <Label prefHeight="23.0" prefWidth="154.0" text="Child Date of Birth" textFill="WHITE" GridPane.rowIndex="2">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="23.0" prefWidth="198.0" text="Parent 1 Phone Number" GridPane.rowIndex="5">
+            <Label prefHeight="23.0" prefWidth="198.0" text="Parent 1 Phone Number" textFill="WHITE" GridPane.rowIndex="5">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="23.0" prefWidth="191.0" text="Parent 2 Phone Number" GridPane.rowIndex="8">
+            <Label prefHeight="23.0" prefWidth="191.0" text="Parent 2 Phone Number" textFill="WHITE" GridPane.rowIndex="8">
                <font>
                   <Font size="18.0" />
                </font>
@@ -85,12 +85,12 @@
             <DatePicker fx:id="child_date_of_birth_datepicker" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Button fx:id="add_to_db_button" layoutX="292.0" layoutY="433.0" mnemonicParsing="false" onAction="#add_to_db_action" text="Add">
+      <Button fx:id="add_to_db_button" layoutX="370.0" layoutY="433.0" mnemonicParsing="false" onAction="#add_to_db_action" style="-fx-background-color: #f9e45b;" text=" Add New">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="cancel_button" cancelButton="true" layoutX="396.0" layoutY="433.0" mnemonicParsing="false" onAction="#handleCloseButtonAction" text="Cancel">
+      <Button fx:id="cancel_button" cancelButton="true" layoutX="272.0" layoutY="433.0" mnemonicParsing="false" onAction="#handleCloseButtonAction" style="-fx-background-color: #f9e45b;" text="Cancel">
          <font>
             <Font size="18.0" />
          </font>
