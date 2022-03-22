@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.print.*;
 import javafx.scene.CacheHint;
 import javafx.scene.Parent;
@@ -20,6 +21,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -45,7 +47,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,6 +84,8 @@ public class ShowParentsController implements Initializable {
     private Parent fxml;
     @FXML
     private PieChart piechart;
+    @FXML
+            private Label caption;
 
 
     ObservableList<ParentsSearchModel> parentsSearchModelObservableList = FXCollections.observableArrayList();
@@ -90,24 +94,6 @@ public class ShowParentsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //make a pie chart
-
-        pieChartData.add(new PieChart.Data("Waiting List", 50));
-        pieChartData.add(new PieChart.Data("Enrolled ", 50));
-        piechart.setData(pieChartData);
-
-        piechart.setStartAngle(90);
-        //make a pichart animated
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(5000), piechart);
-        fadeTransition.setFromValue(0.0);
-        fadeTransition.setToValue(1.0);
-        fadeTransition.play();
-
-
-
-
-
-
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
         parents_waiting_list.setOnAction(event -> handle_waitinglist(event));
         parents_all.setOnAction(event -> back_all(event));
@@ -115,12 +101,13 @@ public class ShowParentsController implements Initializable {
         parents_tableview.setEditable(true);
 
 
-
         DatabaseConnection Connectnow2 = new DatabaseConnection();
         Connection connectDB = Connectnow2.getDBconnection();
 
 
         String parents_query = "SELECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM daycare.parents;";
+        //run sql query to get all parents count from the database
+
 
 
 
@@ -191,6 +178,118 @@ public class ShowParentsController implements Initializable {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
+
+//pie chart handeler
+
+        String sql_piechart = "SELECT count(enrollments.child_id) as m1   from enrollments   union all\n" +
+                "select count(waiting_list.waiting_order_id) as m2  from waiting_list;";
+        try {
+            Statement stmt = connectDB.createStatement();
+            ResultSet rs_pie = stmt.executeQuery(sql_piechart);
+            int i1= 0;
+            int i2= 0;
+            int enrolments_count=0;
+            int waiting_list_count=0;
+            ArrayList<Integer>numbersPie=new ArrayList<>();
+            while (rs_pie.next()) {
+                numbersPie.add(rs_pie.getInt("m1"));
+
+            }
+            enrolments_count=numbersPie.get(0);
+            waiting_list_count=numbersPie.get(1);
+
+
+            //make a pie chart show
+
+            pieChartData.add(new PieChart.Data("Waiting List", waiting_list_count));
+            pieChartData.add(new PieChart.Data("Enrolled ",enrolments_count ));
+            piechart.setData(pieChartData);
+
+
+
+            //piechart data number show
+
+
+
+
+            piechart.setStartAngle(90);
+            piechart.setClockwise(true);
+            piechart.setVisible(true);
+            //piechart fancy looks make it with details
+
+            piechart.setLabelLineLength(20);
+            piechart.setLegendSide(Side.BOTTOM);
+            //Processing Events for a Pie Chart
+            piechart.setTitle("Enrollment Status");
+            piechart.setLegendVisible(true);
+            piechart.setLabelsVisible(true);
+            //make pie chart animated with animation with duration
+            piechart.getData().forEach(data -> {
+                data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+                    data.getNode().setEffect(i1 == 0 ? new DropShadow() : null);
+
+
+                    //make it to rotate when mouse pressed
+                    data.getNode().setOnMousePressed(e1 -> {
+                        RotateTransition rt = new RotateTransition(Duration.millis(1000), data.getNode());
+
+                        rt.setByAngle(360);
+
+                        rt.play();
+                    });
+
+                    //make sure to rotate when mouse released
+
+
+
+
+                    FadeTransition ft = new FadeTransition(Duration.millis(1000), data.getNode());
+                    ft.setFromValue(0.1);
+                    ft.setToValue(1);
+                    ft.play();
+
+                }
+                );
+
+                    }
+            );
+            //make it to rotate when mouse pressed
+
+
+
+
+            caption.setTextFill(Color.web("#0f123f"));
+            caption.setStyle("-fx-font: 20 arial;");
+            for (final PieChart.Data data : piechart.getData()) {
+                data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                        new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent e) {
+                                System.out.println("Pie Chart Data: " + data.getName()+" "+data.getPieValue());
+                                caption.setTranslateX(e.getSceneX()- caption.getLayoutX());
+                                caption.setTranslateY(e.getSceneY()- caption.getLayoutY());
+                                caption.setText(String.valueOf(data.getPieValue()) + "%");
+
+
+
+
+                            }
+                        });
+            }
+
+            //make a pichart animated
+            FadeTransition fadeTransition = new FadeTransition(Duration.millis(5000), piechart);
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            fadeTransition.play();
+
+
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -464,6 +563,9 @@ public class ShowParentsController implements Initializable {
             double scaleY = pageLayout.getPrintableHeight() / parents_tableview.getBoundsInParent().getHeight();
             double scaleX1= pageLayout.getPrintableWidth() / screen.getBoundsInParent().getWidth();
             double scaleY1= pageLayout.getPrintableHeight() / screen.getBoundsInParent().getHeight();
+            double scaleX3= pageLayout.getPrintableWidth() / piechart.getBoundsInParent().getWidth();
+            double scaleY3= pageLayout.getPrintableHeight() / piechart.getBoundsInParent().getHeight();
+
 
 
 
@@ -472,6 +574,8 @@ public class ShowParentsController implements Initializable {
             scaleY = scaleY > 1 ? 1 : scaleY;
             scaleX1 = scaleX1 > 1 ? 1 : scaleX1;
             scaleY1 = scaleY1 > 1 ? 1 : scaleY1;
+            scaleX3 = scaleX3 > 1 ? 1 : scaleX3;
+            scaleY3 = scaleY3 > 1 ? 1 : scaleY3;
             //open logo on the top of the tableview
 
 
@@ -486,6 +590,9 @@ public class ShowParentsController implements Initializable {
             //show the image on the top of the tableview
             parents_tableview.getTransforms().add(new Scale(scaleX, scaleY));
             screen.getTransforms().add(new Scale(scaleX1, scaleY1));
+            screen.setVisible(true);
+            piechart.getTransforms().add(new Scale(scaleX3, scaleY3));
+            piechart.setVisible(true);
             //set png image on the top of the print
             //get the screen on the top of the print page
 
@@ -493,13 +600,15 @@ public class ShowParentsController implements Initializable {
 
 
 
-            //print the tableview
+            //print the tableview and the screen and piechart in different pages
+
             PrinterJob job = PrinterJob.createPrinterJob();
 
             if (job != null) {
                 boolean printed = job.printPage(pageLayout, parents_tableview);
                 boolean printed1 = job.printPage(pageLayout, screen);
-                if (printed && printed1) {
+                boolean printed2 = job.printPage(pageLayout, piechart);
+                if (printed && printed1 && printed2) {
                     job.endJob();
                 }
             }

@@ -9,13 +9,12 @@
    <children>
       <Pane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #0f123f;" stylesheets="@../../../../java/com/example/ui/cssparents.css">
          <children>
-            <TableView fx:id="parents_tableview" layoutX="52.0" layoutY="156.0" onMouseClicked="#mouse_over" prefHeight="376.0" prefWidth="1020.0" style="-fx-border-color: #6db784;" styleClass="table_view_parents" stylesheets="@../../../../java/com/example/ui/cssparents.css">
+            <TableView fx:id="parents_tableview" layoutX="52.0" layoutY="156.0" onMouseClicked="#mouse_over" prefHeight="376.0" prefWidth="605.0" style="-fx-border-color: #6db784;" styleClass="table_view_parents" stylesheets="@../../../../java/com/example/ui/cssparents.css">
               <columns>
                 <TableColumn fx:id="id_parents_coulumn" prefWidth="141.20000457763672" style="-fx-background-color: #6db784;" text="ID" />
-                <TableColumn fx:id="firstname_parents_column" prefWidth="203.19998168945312" text="First_Name" />
-                  <TableColumn fx:id="lastname_parents_column" minWidth="0.0" prefWidth="270.5999755859375" text="Last_Name" />
-                  <TableColumn fx:id="phone_parents_column" prefWidth="221.39996337890625" text="Phone" />
-                  <TableColumn prefWidth="591.3999633789062" text="Static" />
+                <TableColumn fx:id="firstname_parents_column" prefWidth="145.0" text="First_Name" />
+                  <TableColumn fx:id="lastname_parents_column" minWidth="0.0" prefWidth="159.0" text="Last_Name" />
+                  <TableColumn fx:id="phone_parents_column" prefWidth="156.0" text="Phone" />
               </columns>
             </TableView>
             <Button fx:id="print_parents" layoutX="952.0" layoutY="85.0" mnemonicParsing="false" onAction="#print" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f9e45b;" text="Print">
@@ -50,7 +49,8 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <PieChart fx:id="piechart" layoutX="876.0" layoutY="183.0" prefHeight="342.0" prefWidth="200.0" />
+            <PieChart fx:id="piechart" layoutX="656.0" layoutY="156.0" prefHeight="376.0" prefWidth="415.0" style="-fx-background-color: #ffffff;" />
+            <Label fx:id="caption" layoutX="1012.0" layoutY="163.0" />
          </children>
       </Pane>
    </children>
