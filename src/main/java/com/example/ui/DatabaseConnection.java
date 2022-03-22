@@ -3,8 +3,8 @@ package com.example.ui;
 import java.sql.*;
 
 public class DatabaseConnection {
-    // connect to database
-    public Connection databaselink;
+    // attributes
+    private Connection databaselink;
     private PreparedStatement pstmt = null;
     private PreparedStatement psInsert = null;
     private PreparedStatement psCheckUserExists = null;
@@ -50,7 +50,6 @@ public class DatabaseConnection {
         String username = System.getenv("username");
         String password = System.getenv("password");
         try {
-            //Class.forName("com.mysql.cj.jdbc.Driver");
             databaselink = DriverManager.getConnection(url, username, password);
         } catch (SQLException e){
             e.printStackTrace();

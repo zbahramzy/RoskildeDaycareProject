@@ -70,6 +70,9 @@ public class ShowEmployeesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
+        print_button.setOnAction(event -> print(event));
+
         all_employees.setOnAction(event -> show_all_employees(event));
         working.setOnAction(event -> get_working_employees(event));
         holiday.setOnAction(event -> get_employees_on_holiday(event));
@@ -77,8 +80,6 @@ public class ShowEmployeesController implements Initializable {
         select_date_button.setOnAction(event -> select_date_button_handler(event));
         reset_date_button.setOnAction(event -> reset_date_button_handler(event));
 
-        back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
-        print_button.setOnAction(event -> print(event));
 
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
@@ -137,6 +138,8 @@ public class ShowEmployeesController implements Initializable {
         } catch (SQLException e) {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
+        } finally {
+            connectNow.closeConnection();
         }
     }
 
@@ -380,5 +383,9 @@ public class ShowEmployeesController implements Initializable {
             }
         }
     }
+
+
+    // methods i need
+    //private
 
 }
