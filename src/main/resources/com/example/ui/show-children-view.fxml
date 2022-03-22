@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.chart.PieChart?>
 <AnchorPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@../../../../java/com/example/ui/cssparents.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.ShowChildrenController">
    <children>
       <Pane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #0f123f;" stylesheets="@../../../../java/com/example/ui/cssparents.css">
@@ -22,6 +23,7 @@
                 <TableColumn fx:id="table_column_first_name_children_table" prefWidth="282.4000244140625" text="First Name" />
                   <TableColumn fx:id="table_column_last_name_children_table" minWidth="0.0" prefWidth="304.7999572753906" text="Last Name" />
                   <TableColumn fx:id="table_column_date_of_birth_children_table" prefWidth="290.800048828125" text="Date of Birth" />
+                 <TableColumn prefWidth="591.3999633789062" text="Static" />
               </columns>
             </TableView>
             <Button fx:id="button_print_children" layoutX="952.0" layoutY="85.0" mnemonicParsing="false" onAction="#print" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f9e45b;" text="Print">
@@ -55,6 +57,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
+            <PieChart fx:id="piechart2" layoutX="876.0" layoutY="183.0" prefHeight="342.0" prefWidth="200.0" />
          </children>
       </Pane>
    </children>

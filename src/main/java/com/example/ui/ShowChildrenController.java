@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.*;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -58,8 +59,11 @@ public class ShowChildrenController implements Initializable {
     private ToggleGroup toggle_group;
     @FXML
     private TextField text_field_display;
+    @FXML
+    private PieChart piechart2;
 
     ObservableList<ChildrenData> childrenDataObservableList = FXCollections.observableArrayList();
+    ObservableList<PieChart.Data> pieChartData2 = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,6 +75,7 @@ public class ShowChildrenController implements Initializable {
                 "    FROM children\n" +
                 "    LEFT JOIN waiting_list wl on children.child_id = wl.child_id\n" +
                 "    LEFT JOIN enrollments e on children.child_id = e.child_id;";
+
 
         try {
             Statement statement = connectDB.createStatement();
@@ -86,8 +91,6 @@ public class ShowChildrenController implements Initializable {
                 String[] date2 = date1.split("-");
                 LocalDate date_of_birth = LocalDate.of(Integer.valueOf(date2[0]), Integer.valueOf(date2[1]), Integer.valueOf(date2[2]));
                 String is_enrolled_value = queryOutput.getString("start_year");
-//                Boolean is_enrolled = false;
-//                if(is_enrolled_value != null) { is_enrolled = true; }
 
                 childrenDataObservableList.add(new ChildrenData(child_id, first_name, last_name, date_of_birth));
 
@@ -127,7 +130,49 @@ public class ShowChildrenController implements Initializable {
                 // apply sorting
                 table_view_show_children.setItems(sortedData);
             }
+//            connectDB.close();
+//            connectNow.closeConnection();
         } catch (Exception e){
+            e.printStackTrace();
+        }
+        //for the piechart
+
+//        DatabaseConnection connectNowPie = new DatabaseConnection();
+//        Connection connectDBPie = connectNowPie.getDBconnection();
+        String query_for_pie = "select count(start_year) as n1 from enrollments\n" +
+                "union\n" +
+                "select count(date_of_birth) as n2 from children;";
+
+        try {
+
+            Statement statement1 = connectDB.createStatement();
+            ResultSet result_set_query_for_pie_all = statement1.executeQuery(query_for_pie);
+            int p1 = 0;
+            int p2 = 0;
+            int enrollment_count = 0;
+            int all_children_count = 0;
+            ArrayList<Integer> numbers = new ArrayList<>();
+
+            while (result_set_query_for_pie_all.next()) {
+                numbers.add(result_set_query_for_pie_all.getInt("n1"));
+                }
+
+            enrollment_count = numbers.get(0);
+            all_children_count = numbers.get(1);
+
+            p1 = (((all_children_count - enrollment_count) *100 / all_children_count));
+            p2 = 100-p1;
+            pieChartData2.add(new PieChart.Data("Waiting List", p1));
+            pieChartData2.add(new PieChart.Data("Enrolled ", p2));
+            piechart2.setData(pieChartData2);
+            piechart2.setStartAngle(90);
+            //make a pichart animated
+            FadeTransition fadeTransition = new FadeTransition(Duration.millis(5000), piechart2);
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            fadeTransition.play();
+        } catch (SQLException e) {
+            Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
     }
