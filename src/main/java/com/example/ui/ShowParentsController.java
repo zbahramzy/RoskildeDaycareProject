@@ -44,6 +44,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -315,6 +316,10 @@ public class ShowParentsController implements Initializable {
     @FXML
     private void mouse_over(MouseEvent event){
 
+
+
+
+
         ParentsSearchModel selected_parents = parents_tableview.getSelectionModel().getSelectedItem();
         if(selected_parents != null){
             DatabaseConnection Connectnow4 = new DatabaseConnection();
@@ -358,7 +363,7 @@ public class ShowParentsController implements Initializable {
             screen.setStyle("-fx-font-size: 16;");
             screen.setStyle("-fx-font-weight: bold;");
             //set style as animation for the text
-            FadeTransition ft = new FadeTransition(Duration.millis(1000), screen);
+            FadeTransition ft = new FadeTransition(Duration.millis(2000), screen);
 
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
@@ -369,18 +374,31 @@ public class ShowParentsController implements Initializable {
 
 
 
+
             //make it visible everytime is clicked and desappear when clicked again
             screen.setVisible(true);
-            // hide the text after 3 seconds
+
+            // hide the text after 5 seconds
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
                         @Override
                         public void run() {
                             screen.setVisible(false);
+
                         }
                     }
-                    , 4000
-            );
+                    , 10000);
+
+
+
+
+
+
+
+
+
+
+
 
 
         }
