@@ -146,10 +146,13 @@ public class SearchObjects {
 
     @Override
     public String toString() {
-        return "parent_firstname='" + parent_firstname + '\'' +
-                ", parent_lastname='" + parent_lastname + '\'' +
-                ", parent_phone='" + parent_phone + '\'' +
-                '}';
+        return "Parent's name : " + parent_firstname +
+                " " + parent_lastname + "  |  " +
+                " Phone number : " + parent_phone + " ;                                                                        ";
+    }
+
+    public String myToString() {
+        return String.format("Parent's name: %20s %-20s phone: %-20s ", parent_firstname,parent_lastname,parent_phone);
     }
 
 

@@ -15,6 +15,7 @@
    <children>
       <Pane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #0f123f;" stylesheets="@../../../../java/com/example/ui/cssparents.css">
          <children>
+            <TextField fx:id="text_field_display" layoutX="194.0" layoutY="561.0" prefHeight="25.0" prefWidth="878.0" style="-fx-background-color: transparent;" />
             <TableView fx:id="table_view_show_children" layoutX="52.0" layoutY="156.0" onMouseClicked="#mouse_clicked_select_row" prefHeight="376.0" prefWidth="1020.0" style="-fx-border-color: #6db784;" styleClass="table_view_parents" stylesheets="@../../../../java/com/example/ui/cssparents.css">
               <columns>
                 <TableColumn fx:id="table_column_id_children_table" prefWidth="141.20000457763672" style="-fx-background-color: #6db784;" text="ID" />
@@ -49,7 +50,11 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="text_field_display" layoutX="52.0" layoutY="561.0" prefHeight="25.0" prefWidth="1020.0" />
+            <Label alignment="CENTER" layoutX="52.0" layoutY="560.0" prefHeight="27.0" prefWidth="144.0" style="-fx-background-color: #6db784;" text="PARENT INFO" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

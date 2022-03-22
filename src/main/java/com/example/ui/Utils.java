@@ -47,7 +47,7 @@ public class Utils {
             // connecting to the database
             //connection();
 
-            connectNow.setPstmt(connectDB.prepareStatement("SELECT password FROM daycare.users WHERE username = ?"));
+            connectNow.setPstmt(connectDB.prepareStatement("SELECT password FROM daycare2.users WHERE username = ?"));
             connectNow.getPstmt().setString(1, username);
             connectNow.setRs(connectNow.getPstmt().executeQuery());
             connectNow.getRs();

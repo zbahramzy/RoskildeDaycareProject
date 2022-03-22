@@ -1,5 +1,6 @@
 package com.example.ui;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Scale;
+import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.lang.reflect.Array;
@@ -319,13 +321,50 @@ public class ShowChildrenController implements Initializable {
             String textToDisplay;
             StringBuilder sb = new StringBuilder();
             for (SearchObjects sO : parentsToDisplay
-                 ) { sb.append(sO.toString());
+                 ) { sb.append(sO.myToString());
 
             }
             text_field_display.setText(sb.toString());
+
+            text_field_display.setStyle("-fx-text-fill: #0f123f;");
+            text_field_display.setStyle("-fx-background-color: #fff;");
+            text_field_display.setStyle("-fx-background-radius: 10;");
+            text_field_display.setStyle("-fx-border-color: #0f123f;");
+            text_field_display.setStyle("-fx-border-radius: 10;");
+            text_field_display.setStyle("-fx-border-width: 2;");
+            text_field_display.setStyle("-fx-font-size: 16;");
+            text_field_display.setStyle("-fx-font-weight: bold;");
+            //set style as animation for the text
+            FadeTransition ft = new FadeTransition(Duration.millis(2000), text_field_display);
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+
+            //make a loop to show the text for 3 seconds
+            ft.play();
+
+            //make it visible everytime is clicked and desappear when clicked again
+            text_field_display.setVisible(true);
+
+            // hide the text after 5 seconds
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            text_field_display.setVisible(false);
+
+                        }
+                    }
+                    , 10000);
         }
         else{
+            //make screen color transparent
+            text_field_display.setStyle("-fx-background-color: transparent;");
             text_field_display.setText("");
+            text_field_display.clear();
+            text_field_display.setVisible(false);
+
+            //chanege background to #0f123f in e
         }
+        //make translate transition for the vbox
     }
 }
