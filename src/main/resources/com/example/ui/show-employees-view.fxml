@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -35,28 +36,33 @@
                   <Font size="18.0" />
                </font>
             </Button>
+            <Button fx:id="select_date_button" layoutX="862.0" layoutY="196.0" mnemonicParsing="false" onAction="#select_date_button_handler" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #f9e45b #f9e45b;" text="Select Date" />
+            <Button fx:id="reset_date_button" layoutX="862.0" layoutY="236.0" mnemonicParsing="false" onAction="#reset_date_button_handler" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #f9e45b #f9e45b;" text="Reset" />
             <Label layoutX="52.0" layoutY="27.0" prefHeight="27.0" prefWidth="152.0" text="Search Employees" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="my_date_label" alignment="CENTER" layoutX="872.0" layoutY="206.0" prefHeight="30.0" prefWidth="200.0" text="Date" textFill="WHITE">
+            <Label fx:id="my_date_label" layoutX="970.0" layoutY="196.0" prefHeight="30.0" prefWidth="105.0" text="Date" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <DatePicker fx:id="my_date_picker" layoutX="872.0" layoutY="156.0" onAction="#getDate" prefHeight="30.0" prefWidth="200.0" promptText="Enter a date" />
+            <DatePicker fx:id="my_date_picker" layoutX="862.0" layoutY="156.0" prefHeight="30.0" prefWidth="210.0" promptText="Enter a date" />
             <RadioButton fx:id="all_employees" layoutX="205.0" layoutY="95.0" mnemonicParsing="false" onAction="#show_all_employees" prefHeight="25.0" prefWidth="125.0" text="All" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="toggle_group" />
+               </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="working" layoutX="295.0" layoutY="95.0" mnemonicParsing="false" onAction="#get_working_employees" prefHeight="25.0" prefWidth="125.0" text="Woriking" textFill="WHITE">
+            <RadioButton fx:id="working" layoutX="295.0" layoutY="95.0" mnemonicParsing="false" onAction="#get_working_employees" prefHeight="25.0" prefWidth="125.0" text="Woriking" textFill="WHITE" toggleGroup="$toggle_group">
                <font>
                   <Font size="15.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="holiday" layoutX="425.0" layoutY="95.0" mnemonicParsing="false" onAction="#get_employees_on_holiday" prefHeight="25.0" prefWidth="120.0" text="Holiday" textFill="WHITE">
+            <RadioButton fx:id="holiday" layoutX="425.0" layoutY="95.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Holiday" textFill="WHITE" toggleGroup="$toggle_group">
                <font>
                   <Font size="15.0" />
                </font>
