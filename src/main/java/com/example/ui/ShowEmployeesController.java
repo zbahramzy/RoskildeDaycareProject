@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.*;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.DatePicker;
@@ -66,10 +67,23 @@ public class ShowEmployeesController implements Initializable {
     @FXML
     private RadioButton holiday;
 
+
     ObservableList<Employee> employeesObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //piechart of waithinglist and holidaylist
+
+
+
+
+
+
+
+
+
+
+
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
         print_button.setOnAction(event -> print(event));
 
@@ -141,6 +155,9 @@ public class ShowEmployeesController implements Initializable {
         } finally {
             connectNow.closeConnection();
         }
+
+
+
     }
 
     @FXML

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -11,16 +12,17 @@
             <TableView fx:id="parents_tableview" layoutX="52.0" layoutY="156.0" onMouseClicked="#mouse_over" prefHeight="376.0" prefWidth="1020.0" style="-fx-border-color: #6db784;" styleClass="table_view_parents" stylesheets="@../../../../java/com/example/ui/cssparents.css">
               <columns>
                 <TableColumn fx:id="id_parents_coulumn" prefWidth="141.20000457763672" style="-fx-background-color: #6db784;" text="ID" />
-                <TableColumn fx:id="firstname_parents_column" prefWidth="282.4000244140625" text="First_Name" />
-                  <TableColumn fx:id="lastname_parents_column" minWidth="0.0" prefWidth="304.7999572753906" text="Last_Name" />
-                  <TableColumn fx:id="phone_parents_column" prefWidth="290.800048828125" text="Phone" />
+                <TableColumn fx:id="firstname_parents_column" prefWidth="203.19998168945312" text="First_Name" />
+                  <TableColumn fx:id="lastname_parents_column" minWidth="0.0" prefWidth="270.5999755859375" text="Last_Name" />
+                  <TableColumn fx:id="phone_parents_column" prefWidth="221.39996337890625" text="Phone" />
+                  <TableColumn prefWidth="591.3999633789062" text="Static" />
               </columns>
             </TableView>
             <Button fx:id="print_parents" layoutX="952.0" layoutY="85.0" mnemonicParsing="false" onAction="#print" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f9e45b;" text="Print">
                <font>
                   <Font size="18.0" />
                </font></Button>
-            <TextField fx:id="screen" layoutX="52.0" layoutY="561.0" mouseTransparent="true" prefHeight="25.0" prefWidth="1020.0" style="-fx-background-color: #ffffff;" styleClass="disappear" stylesheets="@../../../../java/com/example/ui/cssparents.css" />
+            <TextField fx:id="screen" layoutX="52.0" layoutY="561.0" mouseTransparent="true" prefHeight="25.0" prefWidth="1020.0" style="-fx-background-color: transparent;" styleClass="disappear" stylesheets="@../../../../java/com/example/ui/cssparents.css" />
             <TextField fx:id="keyword_textfield" layoutX="179.0" layoutY="28.0" prefHeight="25.0" prefWidth="893.0" />
             <RadioButton fx:id="parents_all" layoutX="52.0" layoutY="95.0" mnemonicParsing="false" onAction="#back_all" style="-fx-region-border: #6db784;" text="All" textFill="WHITE">
                <font>
@@ -48,6 +50,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
+            <PieChart fx:id="piechart" layoutX="876.0" layoutY="183.0" prefHeight="342.0" prefWidth="200.0" />
          </children>
       </Pane>
    </children>

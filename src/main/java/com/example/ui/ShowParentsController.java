@@ -16,6 +16,7 @@ import javafx.print.*;
 import javafx.scene.CacheHint;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
@@ -79,14 +80,29 @@ public class ShowParentsController implements Initializable {
     @FXML
     private VBox vbox;
     private Parent fxml;
+    @FXML
+    private PieChart piechart;
+
 
     ObservableList<ParentsSearchModel> parentsSearchModelObservableList = FXCollections.observableArrayList();
+    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //make a pie chart
 
-        //make the initialize method to be animated when the page is loaded
+        pieChartData.add(new PieChart.Data("Waiting List", 50));
+        pieChartData.add(new PieChart.Data("Enrolled ", 50));
+        piechart.setData(pieChartData);
+
+        piechart.setStartAngle(90);
+        //make a pichart animated
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(5000), piechart);
+        fadeTransition.setFromValue(0.0);
+        fadeTransition.setToValue(1.0);
+        fadeTransition.play();
+
 
 
 
