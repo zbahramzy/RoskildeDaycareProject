@@ -36,6 +36,10 @@ public class ShowEmployeesController implements Initializable {
     @FXML
     private Button print_button;
     @FXML
+    private Button select_date_button;
+    @FXML
+    private Button reset_date_button;
+    @FXML
     private DatePicker my_date_picker;
     @FXML
     private Label my_date_label;
@@ -54,6 +58,10 @@ public class ShowEmployeesController implements Initializable {
     @FXML
     private TextField keyword_textfield;
     @FXML
+    private ToggleGroup toggle_group;
+    @FXML
+    private RadioButton all_employees;
+    @FXML
     private RadioButton working;
     @FXML
     private RadioButton holiday;
@@ -62,7 +70,15 @@ public class ShowEmployeesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        all_employees.setOnAction(event -> show_all_employees(event));
+        working.setOnAction(event -> get_working_employees(event));
+        holiday.setOnAction(event -> get_employees_on_holiday(event));
+
+        select_date_button.setOnAction(event -> select_date_button_handler(event));
+        reset_date_button.setOnAction(event -> reset_date_button_handler(event));
+
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
+        print_button.setOnAction(event -> print(event));
 
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
@@ -108,10 +124,7 @@ public class ShowEmployeesController implements Initializable {
                         return true;
                     } else if (Employee.getLastname().toLowerCase().contains(search_keyword)) {
                         return true;
-                    } else if (Employee.getPhone().toLowerCase().contains(search_keyword)) {
-                        return true;
-                    } else
-                        return false;
+                    } else return Employee.getPhone().toLowerCase().contains(search_keyword);
                 });
             });
 
@@ -128,7 +141,84 @@ public class ShowEmployeesController implements Initializable {
     }
 
     @FXML
-    public void getDate(ActionEvent event) {
+    public void select_date_button_handler(ActionEvent event) {
+
+        LocalDate myDate = my_date_picker.getValue();
+        String myFormattedDateOne;
+
+        if (myDate == null) {
+            my_date_label.setText("" + myDate);
+        } else {
+            myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            my_date_label.setText("" + myFormattedDateOne);
+            employeesObservableList.clear();
+        }
+    }
+
+    @FXML
+    public void reset_date_button_handler(ActionEvent event) {
+
+        my_date_picker.setValue(null);
+        my_date_label.setText("Date");
+        employeesObservableList.clear();
+
+    }
+
+    @FXML
+    private void get_working_employees(ActionEvent event) {
+        employeesObservableList.clear();
+
+        // connect to database
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getDBconnection();
+
+        // query to to get thoses employees that are at work on a given date
+        String employeeViewQuery = "SELECT employees.employee_id, employees.first_name, employees.last_name, employees.phone, employees.title " +
+                "FROM daycare.employees WHERE employee_id != (SELECT employees.employee_id FROM daycare.employees " +
+                "JOIN daycare.employee_work_schedule ON employees.employee_id=employee_work_schedule.employee_id " +
+                "JOIN daycare.work_schedule ON work_schedule.work_schedule_id=employee_work_schedule.work_schedule_id " +
+                "WHERE work_schedule.ferie_day = ?);";
+
+        try {
+            LocalDate myDate = my_date_picker.getValue();
+            String myFormattedDateOne;
+
+            if (myDate != null) {
+                myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                connectNow.setPstmt(connectDB.prepareStatement(employeeViewQuery));
+                connectNow.getPstmt().setString(1, myFormattedDateOne);
+                connectNow.setRs(connectNow.getPstmt().executeQuery());
+                ResultSet rs = connectNow.getRs();
+
+                while (rs.next()) {
+                    Integer id = rs.getInt("employees.employee_id");
+                    String firstname = rs.getString("employees.first_name");
+                    String lastname = rs.getString("employees.last_name");
+                    String phone = rs.getString("employees.phone");
+                    String title = rs.getString("employees.title");
+                    employeesObservableList.add(new Employee(id, firstname, lastname, phone, title));
+
+                    employee_id_table_column.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
+                    employee_firstname_table_column.setCellValueFactory(new PropertyValueFactory<>("firstname"));
+                    employee_lastname_table_column.setCellValueFactory(new PropertyValueFactory<>("lastname"));
+                    employee_phone_table_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
+                    employee_title_table_column.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+                    employees_tableview.setItems(employeesObservableList);
+                }
+            }
+        }  catch (SQLException e) {
+            Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
+            e.printStackTrace();
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    private void get_employees_on_holiday(ActionEvent event) {
         employeesObservableList.clear();
 
         // connect to database
@@ -143,57 +233,41 @@ public class ShowEmployeesController implements Initializable {
                 "WHERE work_schedule.ferie_day = ?;";
 
         try {
-            String myFormattedDateOne = null;
-            String myFormattedDateTwo = null;
             LocalDate myDate = my_date_picker.getValue();
+            String myFormattedDateOne;
 
             if (myDate != null) {
                 myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                myFormattedDateTwo = myDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                my_date_label.setText(myFormattedDateTwo);
-            } else {
-                my_date_picker.setValue(null);
-                my_date_label.setText("Date");
+
+                connectNow.setPstmt(connectDB.prepareStatement(employeeViewQuery));
+                connectNow.getPstmt().setString(1, myFormattedDateOne);
+                connectNow.setRs(connectNow.getPstmt().executeQuery());
+                ResultSet rs = connectNow.getRs();
+
+                while (rs.next()) {
+                    Integer id = rs.getInt("employees.employee_id");
+                    String firstname = rs.getString("employees.first_name");
+                    String lastname = rs.getString("employees.last_name");
+                    String phone = rs.getString("employees.phone");
+                    String title = rs.getString("employees.title");
+                    employeesObservableList.add(new Employee(id, firstname, lastname, phone, title));
+
+                    employee_id_table_column.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
+                    employee_firstname_table_column.setCellValueFactory(new PropertyValueFactory<>("firstname"));
+                    employee_lastname_table_column.setCellValueFactory(new PropertyValueFactory<>("lastname"));
+                    employee_phone_table_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
+                    employee_title_table_column.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+                    employees_tableview.setItems(employeesObservableList);
+                }
             }
-
-            connectNow.setPstmt(connectDB.prepareStatement(employeeViewQuery));
-            connectNow.getPstmt().setString(1, myFormattedDateOne);
-            connectNow.setRs(connectNow.getPstmt().executeQuery());
-            ResultSet rs = connectNow.getRs();
-
-            while (rs.next()) {
-                Integer id = rs.getInt("employees.employee_id");
-                String firstname = rs.getString("employees.first_name");
-                String lastname = rs.getString("employees.last_name");
-                String phone = rs.getString("employees.phone");
-                String title = rs.getString("employees.title");
-                employeesObservableList.add(new Employee(id, firstname, lastname, phone, title));
-
-                employee_id_table_column.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
-                employee_firstname_table_column.setCellValueFactory(new PropertyValueFactory<>("firstname"));
-                employee_lastname_table_column.setCellValueFactory(new PropertyValueFactory<>("lastname"));
-                employee_phone_table_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
-                employee_title_table_column.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-                employees_tableview.setItems(employeesObservableList);
-            }
-
         } catch (SQLException e) {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         } catch (NullPointerException e){
             e.printStackTrace();
         }
-    }
 
-    @FXML
-    private void get_employees_on_holiday(ActionEvent event) {
-        //getDate(event);
-    }
-
-    @FXML
-    private void get_working_employees(ActionEvent event) {
-        //getDate(event);
     }
 
     @FXML

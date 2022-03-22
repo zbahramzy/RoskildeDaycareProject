@@ -54,9 +54,13 @@ public class ParentsSearchModel {
     @Override
     public String toString() {
         return
-                "                                             FIRST NAME='" + first_name + '\'' +
-                "                                             LAST NAME='" + last_name + '\'' +
-                "                                             DATE OF BIRTH='" + phone + '\'' +
-                ' ';
+                //fix emount of space in the table with the different size of screen
+
+
+                        String.format("%1$-45s FIRST NAME:  %1$-60s", first_name) +
+                        String.format("LAST NAME:  %1$-60s", last_name) +
+                        String.format("DATE OF BIRTH:  %1$-60s", phone);
+
+
     }
 }
