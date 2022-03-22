@@ -3,23 +3,14 @@ package com.example.ui;
 import java.sql.*;
 
 public class DatabaseConnection {
-
     // connect to database
     public Connection databaselink;
     private PreparedStatement pstmt = null;
     private PreparedStatement psInsert = null;
     private PreparedStatement psCheckUserExists = null;
     private ResultSet rs = null;
-
     // constructors
     public DatabaseConnection() {}
-
-    public DatabaseConnection(PreparedStatement pstmt, PreparedStatement psInsert, PreparedStatement psCheckUserExists, ResultSet rs) {
-        this.pstmt = pstmt;
-        this.psInsert = psInsert;
-        this.psCheckUserExists = psCheckUserExists;
-        this.rs = rs;
-    }
     // getters
     public Connection getDatabaselink() {
         return databaselink;
