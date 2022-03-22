@@ -1,7 +1,6 @@
 package com.example.ui;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -315,6 +314,7 @@ public class ShowParentsController implements Initializable {
     //when hover over the tableview show the information about that person
     @FXML
     private void mouse_over(MouseEvent event){
+
         ParentsSearchModel selected_parents = parents_tableview.getSelectionModel().getSelectedItem();
         if(selected_parents != null){
             DatabaseConnection Connectnow4 = new DatabaseConnection();
@@ -371,11 +371,26 @@ public class ShowParentsController implements Initializable {
 
             //make it visible everytime is clicked and desappear when clicked again
             screen.setVisible(true);
-            //make vbox zoom out and zoom in
+            // hide the text after 3 seconds
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            screen.setVisible(false);
+                        }
+                    }
+                    , 4000
+            );
+
 
         }
         else{
+            //make screen color transparent
+            screen.setStyle("-fx-background-color: transparent;");
             screen.setText("");
+            screen.clear();
+            screen.setVisible(false);
+
 
             //chanege background to #0f123f in e
         }
