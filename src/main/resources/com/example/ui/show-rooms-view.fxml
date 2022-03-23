@@ -8,11 +8,15 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1080.0" style="-fx-background-color: #0f123f;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.ShowRoomsController">
+<AnchorPane prefHeight="600.0" prefWidth="1080.0" style="-fx-background-color: #0f123f;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="com.example.ui.ShowRoomsController">
    <children>
-      <Button fx:id="back_to_loggedin_button" layoutX="954.0" layoutY="30.0" mnemonicParsing="false" style="-fx-background-color: #f9e45b;" text="Go Back" />
-      <TableView fx:id="room_search" layoutX="140.0" layoutY="85.0" prefHeight="477.0" prefWidth="879.0">
+      <Button fx:id="back_to_loggedin_button" layoutX="971.0" layoutY="25.0" mnemonicParsing="false" style="-fx-background-color: #f9e45b;" text="Go Back">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <TableView fx:id="room_search" layoutX="181.0" layoutY="88.0" prefHeight="477.0" prefWidth="879.0">
         <columns>
           <TableColumn fx:id="class_id_column" prefWidth="103.0" text="Class ID" />
           <TableColumn fx:id="child_firstname_column" prefWidth="172.0" text="Child Name" />
@@ -21,10 +25,26 @@
             <TableColumn fx:id="employee_lastname_column" prefWidth="219.0" text="Teacher Surname" />
         </columns>
       </TableView>
-      <Label layoutX="56.0" layoutY="34.0" text="Filter" textFill="WHITE" />
-      <TextField fx:id="filter_textfield" layoutX="140.0" layoutY="30.0" prefHeight="25.0" prefWidth="686.0" />
-      <RadioButton fx:id="teacher_radio_button" layoutX="37.0" layoutY="93.0" mnemonicParsing="false" text="Teacher" textFill="WHITE" />
-      <RadioButton fx:id="children_radio_button" layoutX="37.0" layoutY="126.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="92.0" text="Children" textFill="WHITE" />
-      <Button fx:id="print_button" layoutX="893.0" layoutY="31.0" mnemonicParsing="false" onAction="#print" style="-fx-background-color: #f9e45b;" text="Print" />
+      <Label layoutX="93.0" layoutY="34.0" text="Filter" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <TextField fx:id="filter_textfield" layoutX="181.0" layoutY="27.0" prefHeight="35.0" prefWidth="676.0">
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
+      <RadioButton fx:id="teacher_radio_button" layoutX="37.0" layoutY="93.0" mnemonicParsing="false" text="Teacher" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font></RadioButton>
+      <RadioButton fx:id="children_radio_button" layoutX="37.0" layoutY="126.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="108.0" text="Children" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font></RadioButton>
+      <Button fx:id="print_button" layoutX="884.0" layoutY="25.0" mnemonicParsing="false" onAction="#print" style="-fx-background-color: #f9e45b;" text="Print">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <ComboBox fx:id="class_combobox" layoutX="42.0" layoutY="170.0" onAction="#class_combo" prefHeight="25.0" prefWidth="99.0" promptText="Class 1" />
    </children>
 </AnchorPane>
