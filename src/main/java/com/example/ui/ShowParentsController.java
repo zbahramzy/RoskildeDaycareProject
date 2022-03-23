@@ -155,11 +155,11 @@ public class ShowParentsController implements Initializable {
                     }
 
                     String searchkeyword = newValue.toLowerCase();
-                    if (parentsSearchModel.getFirst_name().toLowerCase().indexOf(searchkeyword) > -1) {
+                    if (parentsSearchModel.getFirst_name().toLowerCase().contains(searchkeyword)) {
                         return true;
-                    } else if (parentsSearchModel.getLast_name().toLowerCase().indexOf(searchkeyword) > -1) {
+                    } else if (parentsSearchModel.getLast_name().toLowerCase().contains(searchkeyword)) {
                         return true;
-                    } else if (parentsSearchModel.getPhone().toLowerCase().indexOf(searchkeyword) > -1) {
+                    } else if (parentsSearchModel.getPhone().toLowerCase().contains(searchkeyword)) {
                         return true;
                     } else
                         return false;
@@ -197,12 +197,15 @@ public class ShowParentsController implements Initializable {
             }
             enrolments_count=numbersPie.get(0);
             waiting_list_count=numbersPie.get(1);
+            //get persentage of enrolments_count and waiting_list_count
+            double enrolments_percentage=(enrolments_count*100)/(enrolments_count+waiting_list_count);
+            double waiting_list_percentage=(waiting_list_count*100)/(enrolments_count+waiting_list_count);
 
 
             //make a pie chart show
 
-            pieChartData.add(new PieChart.Data("Waiting List", waiting_list_count));
-            pieChartData.add(new PieChart.Data("Enrolled ",enrolments_count ));
+            pieChartData.add(new PieChart.Data("Waiting List", waiting_list_percentage));
+            pieChartData.add(new PieChart.Data("Enrolled ",enrolments_percentage));
             piechart.setData(pieChartData);
 
 
