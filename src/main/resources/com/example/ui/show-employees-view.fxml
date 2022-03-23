@@ -25,8 +25,8 @@
                   <TableColumn fx:id="employee_title_table_column" prefWidth="135.5343017578125" text="Title" />
               </columns>
             </TableView>
-            <TextField fx:id="keyword_textfield" layoutX="205.0" layoutY="28.0" prefHeight="25.0" prefWidth="867.0" />
-            <Button fx:id="back_to_loggedin_button" layoutX="952.0" layoutY="523.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f9e45b;" text="Go Back">
+            <TextField fx:id="keyword_textfield" layoutX="205.0" layoutY="28.0" prefHeight="25.0" prefWidth="867.0" promptText="Search" />
+            <Button fx:id="back_to_loggedin_button" layoutX="952.0" layoutY="522.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f9e45b;" text="Go Back">
                <font>
                   <Font size="18.0" />
                </font>
@@ -36,8 +36,14 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="select_date_button" layoutX="862.0" layoutY="196.0" mnemonicParsing="false" onAction="#select_date_button_handler" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #f9e45b #f9e45b;" text="Select Date" />
-            <Button fx:id="reset_date_button" layoutX="862.0" layoutY="236.0" mnemonicParsing="false" onAction="#reset_date_button_handler" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #f9e45b #f9e45b;" text="Reset" />
+            <Button fx:id="select_date_button" layoutX="862.0" layoutY="196.0" mnemonicParsing="false" onAction="#select_date_button_handler" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #f9e45b #f9e45b;" text="Select Date">
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
+            <Button fx:id="reset_date_button" layoutX="862.0" layoutY="236.0" mnemonicParsing="false" onAction="#reset_date_button_handler" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #f9e45b #f9e45b;" text="Reset">
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
             <Label layoutX="52.0" layoutY="27.0" prefHeight="27.0" prefWidth="152.0" text="Search Employees" textFill="WHITE">
                <font>
                   <Font size="18.0" />

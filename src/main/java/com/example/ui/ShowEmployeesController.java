@@ -25,6 +25,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 //import java.sql.Statement;
+//import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -67,23 +68,10 @@ public class ShowEmployeesController implements Initializable {
     @FXML
     private RadioButton holiday;
 
-
     ObservableList<Employee> employeesObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //piechart of waithinglist and holidaylist
-
-
-
-
-
-
-
-
-
-
-
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
         print_button.setOnAction(event -> print(event));
 
@@ -94,61 +82,49 @@ public class ShowEmployeesController implements Initializable {
         select_date_button.setOnAction(event -> select_date_button_handler(event));
         reset_date_button.setOnAction(event -> reset_date_button_handler(event));
 
+        // connecting to the database
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getDBconnection();
 
+        // query to se all employees from the database
+        String employeeViewQuery = "SELECT employee_id, first_name, last_name, phone, title FROM daycare.employees;";
+
+        try {
+            // send the query to the database
+            ResultSet rs = sendQueryToDatabase(connectNow, connectDB, employeeViewQuery, null);
+
+            // show employees from database in tableview
+            showEmployees(rs);
+
+            // filter search
+            searchFilterEmployeesTable();
+        } catch (SQLException e) {
+            Logger.getLogger(ShowEmployeesController.class.getName()).log(Level.SEVERE, null, e);
+            e.printStackTrace();
+        } finally {
+            connectNow.closeConnection();
+        }
+    }
+
+    @FXML
+    private void show_all_employees(ActionEvent event) {
+        employeesObservableList.clear();
+
+        // connect to database
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
 
         String employeeViewQuery = "SELECT employee_id, first_name, last_name, phone, title FROM daycare.employees;";
 
         try {
-            connectNow.setPstmt(connectDB.prepareStatement(employeeViewQuery));
-            connectNow.setRs(connectNow.getPstmt().executeQuery());
-            ResultSet rs = connectNow.getRs();
-            //Statement statement = connectDB.createStatement();
-            //ResultSet rs = statement.executeQuery(employeeViewQuery);
+            // send the query to the database
+            ResultSet rs = sendQueryToDatabase(connectNow, connectDB, employeeViewQuery, null);
 
-            while (rs.next()) {
-                Integer id = rs.getInt("employee_id");
-                String firstname = rs.getString("employees.first_name");
-                String lastname = rs.getString("employees.last_name");
-                String phone = rs.getString("employees.phone");
-                String title = rs.getString("employees.title");
-                employeesObservableList.add(new Employee(id, firstname, lastname, phone, title));
-
-                employee_id_table_column.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
-                employee_firstname_table_column.setCellValueFactory(new PropertyValueFactory<>("firstname"));
-                employee_lastname_table_column.setCellValueFactory(new PropertyValueFactory<>("lastname"));
-                employee_phone_table_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
-                employee_title_table_column.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-                employees_tableview.setItems(employeesObservableList);
-            }
+            // show employees from database in tableview
+            showEmployees(rs);
 
             // filter search
-            FilteredList<Employee> filteredList = new FilteredList<>(employeesObservableList, p -> true);
-            keyword_textfield.textProperty().addListener((observable, oldValue, newValue) -> {
-                filteredList.setPredicate(Employee -> {
-
-                    if (newValue.isBlank() || newValue.isEmpty() || newValue == null) {
-                        return true;
-                    }
-
-                    String search_keyword = newValue.toLowerCase();
-
-                    if (Employee.getFirstname().toLowerCase().contains(search_keyword)) {
-                        return true;
-                    } else if (Employee.getLastname().toLowerCase().contains(search_keyword)) {
-                        return true;
-                    } else return Employee.getPhone().toLowerCase().contains(search_keyword);
-                });
-            });
-
-            SortedList<Employee> sortedList = new SortedList<>(filteredList);
-            sortedList.comparatorProperty().bind(employees_tableview.comparatorProperty());
-
-            //apply filtered and sorted list to tableview
-            employees_tableview.setItems(sortedList);
-
+            searchFilterEmployeesTable();
         } catch (SQLException e) {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
@@ -162,7 +138,6 @@ public class ShowEmployeesController implements Initializable {
 
     @FXML
     public void select_date_button_handler(ActionEvent event) {
-
         LocalDate myDate = my_date_picker.getValue();
         String myFormattedDateOne;
 
@@ -190,7 +165,7 @@ public class ShowEmployeesController implements Initializable {
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
 
-        // query to to get thoses employees that are at work on a given date
+        // query to get those employees that are at work on a given date
         String employeeViewQuery = "SELECT employees.employee_id, employees.first_name, employees.last_name, employees.phone, employees.title " +
                 "FROM daycare.employees WHERE employee_id NOT IN (SELECT employees.employee_id FROM daycare.employees " +
                 "JOIN daycare.employee_work_schedule ON employees.employee_id=employee_work_schedule.employee_id " +
@@ -202,37 +177,26 @@ public class ShowEmployeesController implements Initializable {
             String myFormattedDateOne;
 
             if (myDate != null) {
+                // converting the date to string so it can be used in the sql query
                 myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                connectNow.setPstmt(connectDB.prepareStatement(employeeViewQuery));
-                connectNow.getPstmt().setString(1, myFormattedDateOne);
-                connectNow.setRs(connectNow.getPstmt().executeQuery());
-                ResultSet rs = connectNow.getRs();
+                // send the query to the database
+                ResultSet rs = sendQueryToDatabase(connectNow, connectDB, employeeViewQuery, myFormattedDateOne);
 
-                while (rs.next()) {
-                    Integer id = rs.getInt("employees.employee_id");
-                    String firstname = rs.getString("employees.first_name");
-                    String lastname = rs.getString("employees.last_name");
-                    String phone = rs.getString("employees.phone");
-                    String title = rs.getString("employees.title");
-                    employeesObservableList.add(new Employee(id, firstname, lastname, phone, title));
+                // show employees from database in tableview
+                showEmployees(rs);
 
-                    employee_id_table_column.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
-                    employee_firstname_table_column.setCellValueFactory(new PropertyValueFactory<>("firstname"));
-                    employee_lastname_table_column.setCellValueFactory(new PropertyValueFactory<>("lastname"));
-                    employee_phone_table_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
-                    employee_title_table_column.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-                    employees_tableview.setItems(employeesObservableList);
-                }
+                // filter search
+                searchFilterEmployeesTable();
             }
         }  catch (SQLException e) {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         } catch (NullPointerException e){
             e.printStackTrace();
+        } finally {
+            connectNow.closeConnection();
         }
-
     }
 
     @FXML
@@ -255,102 +219,25 @@ public class ShowEmployeesController implements Initializable {
             String myFormattedDateOne;
 
             if (myDate != null) {
+                // converting the date to string so it can be used in the sql query
                 myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                connectNow.setPstmt(connectDB.prepareStatement(employeeViewQuery));
-                connectNow.getPstmt().setString(1, myFormattedDateOne);
-                connectNow.setRs(connectNow.getPstmt().executeQuery());
-                ResultSet rs = connectNow.getRs();
+                // send the query to the database
+                ResultSet rs = sendQueryToDatabase(connectNow, connectDB, employeeViewQuery, myFormattedDateOne);
 
-                while (rs.next()) {
-                    Integer id = rs.getInt("employees.employee_id");
-                    String firstname = rs.getString("employees.first_name");
-                    String lastname = rs.getString("employees.last_name");
-                    String phone = rs.getString("employees.phone");
-                    String title = rs.getString("employees.title");
-                    employeesObservableList.add(new Employee(id, firstname, lastname, phone, title));
+                // show employees from database in tableview
+                showEmployees(rs);
 
-                    employee_id_table_column.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
-                    employee_firstname_table_column.setCellValueFactory(new PropertyValueFactory<>("firstname"));
-                    employee_lastname_table_column.setCellValueFactory(new PropertyValueFactory<>("lastname"));
-                    employee_phone_table_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
-                    employee_title_table_column.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-                    employees_tableview.setItems(employeesObservableList);
-                }
+                // filter search
+                searchFilterEmployeesTable();
             }
         } catch (SQLException e) {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         } catch (NullPointerException e){
             e.printStackTrace();
-        }
-
-    }
-
-    @FXML
-    private void show_all_employees(ActionEvent event) {
-        employeesObservableList.clear();
-
-        // connect to database
-        DatabaseConnection connectNow = new DatabaseConnection();
-        Connection connectDB = connectNow.getDBconnection();
-
-        String employeeViewQuery = "SELECT employee_id, first_name, last_name, phone, title FROM daycare.employees;";
-
-        try {
-            connectNow.setPstmt(connectDB.prepareStatement(employeeViewQuery));
-            connectNow.setRs(connectNow.getPstmt().executeQuery());
-            ResultSet rs = connectNow.getRs();
-
-            while (rs.next()) {
-                Integer id = rs.getInt("employee_id");
-                String firstname = rs.getString("employees.first_name");
-                String lastname = rs.getString("employees.last_name");
-                String phone = rs.getString("employees.phone");
-                String title = rs.getString("employees.title");
-                employeesObservableList.add(new Employee(id, firstname, lastname, phone, title));
-
-                employee_id_table_column.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
-                employee_firstname_table_column.setCellValueFactory(new PropertyValueFactory<>("firstname"));
-                employee_lastname_table_column.setCellValueFactory(new PropertyValueFactory<>("lastname"));
-                employee_phone_table_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
-                employee_title_table_column.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-                employees_tableview.setItems(employeesObservableList);
-            }
-
-            // filter search
-            FilteredList<Employee> filteredList = new FilteredList<>(employeesObservableList, p -> true);
-            keyword_textfield.textProperty().addListener((observable, oldValue, newValue) -> {
-                filteredList.setPredicate(Employee -> {
-
-                    if (newValue.isBlank() || newValue.isEmpty() || newValue == null) {
-                        return true;
-                    }
-
-                    String search_keyword = newValue.toLowerCase();
-
-                    if (Employee.getFirstname().toLowerCase().contains(search_keyword)) {
-                        return true;
-                    } else if (Employee.getLastname().toLowerCase().contains(search_keyword)) {
-                        return true;
-                    } else if (Employee.getPhone().toLowerCase().contains(search_keyword)) {
-                        return true;
-                    } else
-                        return false;
-                });
-            });
-
-            SortedList<Employee> sortedList = new SortedList<>(filteredList);
-            sortedList.comparatorProperty().bind(employees_tableview.comparatorProperty());
-
-            //apply filtered and sorted list to tableview
-            employees_tableview.setItems(sortedList);
-
-        } catch (SQLException e) {
-            Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
-            e.printStackTrace();
+        } finally {
+            connectNow.closeConnection();
         }
     }
 
@@ -401,8 +288,65 @@ public class ShowEmployeesController implements Initializable {
         }
     }
 
+    // send a query to database method
+    private ResultSet sendQueryToDatabase(DatabaseConnection connectNow, Connection connectDB, String query, String input) throws SQLException {
+        ResultSet rs;
 
-    // methods i need
-    //private
+        connectNow.setPstmt(connectDB.prepareStatement(query));
+        if(input != null) {
+            connectNow.getPstmt().setString(1, input);
+        }
+        connectNow.setRs(connectNow.getPstmt().executeQuery());
 
+        return rs = connectNow.getRs();
+    }
+
+    // show employees in tableview
+    private void showEmployees(ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            Integer id = rs.getInt("employee_id");
+            String firstname = rs.getString("employees.first_name");
+            String lastname = rs.getString("employees.last_name");
+            String phone = rs.getString("employees.phone");
+            String title = rs.getString("employees.title");
+
+            employeesObservableList.add(new Employee(id, firstname, lastname, phone, title));
+
+            employee_id_table_column.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
+            employee_firstname_table_column.setCellValueFactory(new PropertyValueFactory<>("firstname"));
+            employee_lastname_table_column.setCellValueFactory(new PropertyValueFactory<>("lastname"));
+            employee_phone_table_column.setCellValueFactory(new PropertyValueFactory<>("phone"));
+            employee_title_table_column.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+            employees_tableview.setItems(employeesObservableList);
+        }
+    }
+
+    // search filter for tableview
+    private void searchFilterEmployeesTable() {
+        //FilteredList<Employee> filteredList = new FilteredList<>(employeesObservableList, p -> true);
+        FilteredList<Employee> filteredList = new FilteredList<>(employeesObservableList);
+        keyword_textfield.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(Employee -> {
+
+                if (newValue.isBlank() || newValue.isEmpty() || newValue == null) {
+                    return true;
+                }
+
+                String search_keyword = newValue.toLowerCase();
+
+                if (Employee.getFirstname().toLowerCase().contains(search_keyword)) {
+                    return true;
+                } else if (Employee.getLastname().toLowerCase().contains(search_keyword)) {
+                    return true;
+                } else return Employee.getPhone().toLowerCase().contains(search_keyword);
+            });
+        });
+
+        SortedList<Employee> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(employees_tableview.comparatorProperty());
+
+        // apply filtered and sorted list to tableview
+        employees_tableview.setItems(sortedList);
+    }
 }
