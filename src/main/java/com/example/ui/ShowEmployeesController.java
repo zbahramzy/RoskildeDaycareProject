@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
+//import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.*;
@@ -71,14 +71,6 @@ public class ShowEmployeesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         back_to_loggedin_button.setOnAction(event -> Utils.changeScene(event, "loggedin-view.fxml", "Main Menu", null));
-        print_button.setOnAction(event -> print(event));
-
-        all_employees.setOnAction(event -> show_all_employees(event));
-        working.setOnAction(event -> get_working_employees(event));
-        holiday.setOnAction(event -> get_employees_on_holiday(event));
-
-        select_date_button.setOnAction(event -> select_date_button_handler(event));
-        reset_date_button.setOnAction(event -> reset_date_button_handler(event));
 
         // connecting to the database
         DatabaseConnection connectNow = new DatabaseConnection();
@@ -105,7 +97,7 @@ public class ShowEmployeesController implements Initializable {
     }
 
     @FXML
-    private void show_all_employees(ActionEvent event) {
+    private void show_all_employees() {
         employeesObservableList.clear();
 
         // connect to database
@@ -129,13 +121,10 @@ public class ShowEmployeesController implements Initializable {
         } finally {
             connectNow.closeConnection();
         }
-
-
-
     }
 
     @FXML
-    public void select_date_button_handler(ActionEvent event) {
+    public void select_date_button_handler() {
         LocalDate myDate = my_date_picker.getValue();
         String myFormattedDateOne;
 
@@ -143,10 +132,10 @@ public class ShowEmployeesController implements Initializable {
             myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             my_date_label.setText("" + myFormattedDateOne);
 
-            if(working.isPickOnBounds()) {
-                get_working_employees(event);
-            } else if(holiday.isPickOnBounds()) {
-                get_employees_on_holiday(event);
+            if(working.isSelected()) {
+                get_working_employees();
+            } else if(holiday.isSelected()) {
+                get_employees_on_holiday();
             }
 
         } else {
@@ -155,14 +144,17 @@ public class ShowEmployeesController implements Initializable {
     }
 
     @FXML
-    public void reset_date_button_handler(ActionEvent event) {
+    public void reset_date_button_handler() {
         my_date_picker.setValue(null);
         my_date_label.setText("Date");
-        employeesObservableList.clear();
+
+        if(!all_employees.isSelected()) {
+            employeesObservableList.clear();
+        }
     }
 
     @FXML
-    private void get_working_employees(ActionEvent event) {
+    private void get_working_employees() {
         employeesObservableList.clear();
 
         // connect to database
@@ -204,7 +196,7 @@ public class ShowEmployeesController implements Initializable {
     }
 
     @FXML
-    private void get_employees_on_holiday(ActionEvent event) {
+    private void get_employees_on_holiday() {
         employeesObservableList.clear();
 
         // connect to database
@@ -223,7 +215,7 @@ public class ShowEmployeesController implements Initializable {
             String myFormattedDateOne;
 
             if (myDate != null) {
-                // converting the date to string so it can be used in the sql query
+                // converting the date to string, so it can be used in the sql query
                 myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
                 // send the query to the database
@@ -246,7 +238,7 @@ public class ShowEmployeesController implements Initializable {
     }
 
     @FXML
-    private void print(ActionEvent event){
+    private void print(){
         //print the tableview and the screen
         Printer printer = Printer.getDefaultPrinter();
         PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
