@@ -141,12 +141,16 @@ public class ShowEmployeesController implements Initializable {
         LocalDate myDate = my_date_picker.getValue();
         String myFormattedDateOne;
 
-        if (myDate == null) {
-            my_date_label.setText("" + myDate);
-        } else {
+        if (myDate != null) {
             myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             my_date_label.setText("" + myFormattedDateOne);
-            employeesObservableList.clear();
+            //employeesObservableList.clear();
+            if(working.isFocused()) {
+                get_working_employees(event);
+            }
+
+        } else {
+            my_date_label.setText("" + myDate);
         }
     }
 
