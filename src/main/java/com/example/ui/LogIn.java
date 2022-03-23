@@ -13,7 +13,7 @@ public class LogIn extends Application {
         //creat a new scene for the parent window
 
 
-         FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LogIn.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
         stage.setTitle("Hello!");
         stage.setScene(scene);

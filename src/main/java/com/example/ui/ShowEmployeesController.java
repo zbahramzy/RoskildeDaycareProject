@@ -144,11 +144,11 @@ public class ShowEmployeesController implements Initializable {
         if (myDate != null) {
             myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             my_date_label.setText("" + myFormattedDateOne);
-            //employeesObservableList.clear();
-            if(working.isFocused()) {
+            if(working.isPickOnBounds()) {
                 get_working_employees(event);
+            } else if(holiday.isPickOnBounds()) {
+                get_employees_on_holiday(event);
             }
-
         } else {
             my_date_label.setText("" + myDate);
         }
@@ -211,7 +211,7 @@ public class ShowEmployeesController implements Initializable {
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getDBconnection();
 
-        // query to ....
+        // query to get those employees that are on holiday on a given date
         String employeeViewQuery = "SELECT employees.employee_id, " +
                 "employees.first_name, employees.last_name, employees.phone, employees.title FROM daycare.employees " +
                 "JOIN daycare.employee_work_schedule ON employees.employee_id=employee_work_schedule.employee_id " +
@@ -225,13 +225,10 @@ public class ShowEmployeesController implements Initializable {
             if (myDate != null) {
                 // converting the date to string so it can be used in the sql query
                 myFormattedDateOne = myDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
                 // send the query to the database
                 ResultSet rs = sendQueryToDatabase(connectNow, connectDB, employeeViewQuery, myFormattedDateOne);
-
                 // show employees from database in tableview
                 showEmployees(rs);
-
                 // filter search
                 searchFilterEmployeesTable();
             }
