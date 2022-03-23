@@ -1,6 +1,7 @@
 package com.example.ui;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -8,13 +9,17 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.print.*;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 
@@ -61,6 +66,8 @@ public class ShowChildrenController implements Initializable {
     private TextField text_field_display;
     @FXML
     private PieChart piechart2;
+    @FXML
+    private Label pie_label;
 
     ObservableList<ChildrenData> childrenDataObservableList = FXCollections.observableArrayList();
     ObservableList<PieChart.Data> pieChartData2 = FXCollections.observableArrayList();
@@ -147,30 +154,75 @@ public class ShowChildrenController implements Initializable {
 
             Statement statement1 = connectDB.createStatement();
             ResultSet result_set_query_for_pie_all = statement1.executeQuery(query_for_pie);
-            int p1 = 0;
-            int p2 = 0;
-            int enrollment_count = 0;
-            int all_children_count = 0;
+            int i1 = 0;
             ArrayList<Integer> numbers = new ArrayList<>();
 
             while (result_set_query_for_pie_all.next()) {
                 numbers.add(result_set_query_for_pie_all.getInt("n1"));
                 }
 
-            enrollment_count = numbers.get(0);
-            all_children_count = numbers.get(1);
+            int enrollment_count = numbers.get(0);
+            int all_children_count = numbers.get(1);
 
-            p1 = (((all_children_count - enrollment_count) *100 / all_children_count));
-            p2 = 100-p1;
+            double p1 = (((all_children_count - enrollment_count) *100 / all_children_count));
+            double p2 = 100-p1;
             pieChartData2.add(new PieChart.Data("Waiting List", p1));
             pieChartData2.add(new PieChart.Data("Enrolled ", p2));
             piechart2.setData(pieChartData2);
             piechart2.setStartAngle(90);
+            piechart2.setClockwise(true);
+            piechart2.setVisible(true);
+            //piechart fancy looks make it with details
+
+            piechart2.setLabelLineLength(20);
+            piechart2.setLegendSide(Side.BOTTOM);
+            //Processing Events for a Pie Chart
+            piechart2.setTitle("Enrollment Status");
+            piechart2.setLegendVisible(true);
+            piechart2.setLabelsVisible(true);
+            //make pie chart animated with animation with duration
+            piechart2.getData().forEach(data -> {
+                        data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+                                    data.getNode().setEffect(i1 == 0 ? new DropShadow() : null);
+
+                                    //make it to rotate when mouse pressed
+                                    data.getNode().setOnMousePressed(e1 -> {
+                                        RotateTransition rt = new RotateTransition(Duration.millis(1000), data.getNode());
+                                        rt.setByAngle(360);
+                                        rt.play();
+                                    });
+
+                                    //make sure to rotate when mouse released
+                                    FadeTransition ft = new FadeTransition(Duration.millis(1000), data.getNode());
+                                    ft.setFromValue(0.1);
+                                    ft.setToValue(1);
+                                    ft.play();
+                                }
+                        );
+                    }
+            );
+            //make it to rotate when mouse pressed
+            pie_label.setTextFill(Color.web("#0f123f"));
+            pie_label.setStyle("-fx-font: 20 arial;");
+            for (final PieChart.Data data : piechart2.getData()) {
+                data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                        new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent e) {
+                                System.out.println("Pie Chart Data: " + data.getName()+" "+data.getPieValue());
+                                pie_label.setTranslateX(e.getSceneX()- pie_label.getLayoutX());
+                                pie_label.setTranslateY(e.getSceneY()- pie_label.getLayoutY());
+                                pie_label.setText(String.valueOf((data.getPieValue()) + "%"));
+                            }
+                        });
+            }
+
             //make a pichart animated
             FadeTransition fadeTransition = new FadeTransition(Duration.millis(5000), piechart2);
             fadeTransition.setFromValue(0.0);
             fadeTransition.setToValue(1.0);
             fadeTransition.play();
+
         } catch (SQLException e) {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
