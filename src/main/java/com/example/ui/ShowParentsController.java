@@ -107,12 +107,7 @@ public class ShowParentsController implements Initializable {
 
         String parents_query = "SELECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM daycare.parents;";
         //run sql query to get all parents count from the database
-
-
-
-
-
-
+        
 
         //String waiting_list_query="SElECT parents.parent_id,parents.first_name,parents.last_name,parents.phone FROM parents" +
         //         " left join relations on parents.parent_id=relations.parent_id join enrollments on relations.child_id=enrollments.child_id where relations.child_id=enrollments.child_id;";

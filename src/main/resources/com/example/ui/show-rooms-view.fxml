@@ -3,48 +3,43 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1080.0" style="-fx-background-color: #0f123f;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="com.example.ui.ShowRoomsController">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #0f123f;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui.ShowRoomsController">
    <children>
-      <Button fx:id="back_to_loggedin_button" layoutX="971.0" layoutY="25.0" mnemonicParsing="false" style="-fx-background-color: #f9e45b;" text="Go Back">
+      <Button fx:id="back_to_loggedin_button" layoutX="970.0" layoutY="592.0" mnemonicParsing="false" style="-fx-background-color: #f9e45b;" text="Go Back">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <TableView fx:id="room_search" layoutX="181.0" layoutY="88.0" prefHeight="477.0" prefWidth="879.0">
+      <TableView fx:id="room_search" layoutX="66.0" layoutY="140.0" prefHeight="418.0" prefWidth="531.0">
         <columns>
           <TableColumn fx:id="class_id_column" prefWidth="103.0" text="Class ID" />
           <TableColumn fx:id="child_firstname_column" prefWidth="172.0" text="Child Name" />
-            <TableColumn fx:id="child_lastname_column" prefWidth="179.0" text="Child Surname" />
-            <TableColumn fx:id="employee_firstname_column" minWidth="0.0" prefWidth="193.0" text="Teacher Name" />
-            <TableColumn fx:id="employee_lastname_column" prefWidth="219.0" text="Teacher Surname" />
+            <TableColumn fx:id="child_lastname_column" prefWidth="181.0" text="Child Surname" />
         </columns>
       </TableView>
-      <Label layoutX="93.0" layoutY="34.0" text="Filter" textFill="WHITE">
+      <Label layoutX="73.0" layoutY="33.0" text="Filter" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <TextField fx:id="filter_textfield" layoutX="181.0" layoutY="27.0" prefHeight="35.0" prefWidth="676.0">
+      <TextField fx:id="filter_textfield" layoutX="140.0" layoutY="27.0" prefHeight="35.0" prefWidth="918.0">
          <font>
             <Font size="18.0" />
          </font></TextField>
-      <RadioButton fx:id="teacher_radio_button" layoutX="37.0" layoutY="93.0" mnemonicParsing="false" text="Teacher" textFill="WHITE">
-         <font>
-            <Font size="18.0" />
-         </font></RadioButton>
-      <RadioButton fx:id="children_radio_button" layoutX="37.0" layoutY="126.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="108.0" text="Children" textFill="WHITE">
-         <font>
-            <Font size="18.0" />
-         </font></RadioButton>
-      <Button fx:id="print_button" layoutX="884.0" layoutY="25.0" mnemonicParsing="false" onAction="#print" style="-fx-background-color: #f9e45b;" text="Print">
+      <Button fx:id="print_button" layoutX="991.0" layoutY="82.0" mnemonicParsing="false" onAction="#print" style="-fx-background-color: #f9e45b;" text="Print">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <ComboBox fx:id="class_combobox" layoutX="42.0" layoutY="170.0" onAction="#class_combo" prefHeight="25.0" prefWidth="99.0" promptText="Class 1" />
+      <ComboBox fx:id="class_combobox" layoutX="68.0" layoutY="81.0"  prefHeight="34.0" prefWidth="110.0" promptText="Class 1" />
+      <TableView fx:id="room_search2" layoutX="596.0" layoutY="140.0" prefHeight="418.0" prefWidth="462.0">
+        <columns>
+          <TableColumn fx:id="employee_firstname_column" prefWidth="223.0" text="Teacher First Name" />
+          <TableColumn fx:id="employee_lastname_column" prefWidth="201.0" text="Teacher Last Name" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

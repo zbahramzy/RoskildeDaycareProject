@@ -157,8 +157,9 @@ public class AddFamilyController implements Initializable {
                     }
                 }
             }
-            //System.out.println("parent 1 id =" + parent1id);
+
             //Check if Parent 2 exist already/Store ParentID
+
             if (go) {
                 check_database = connectDB.prepareStatement("SELECT parents.parent_id from relations RIGHT JOIN children c on relations.child_id = c.child_id RIGHT JOIN parents on relations.parent_id = parents.parent_id WHERE daycare.parents.first_name = ? AND daycare.parents.last_name = ? and daycare.parents.phone = ?;");
                 check_database.setString(1, parent_2_first_name_textfield.getText());
@@ -189,6 +190,7 @@ public class AddFamilyController implements Initializable {
                 }
             }
             //System.out.println("parent 2 id =" + parent2id);
+
             //Alert what info will be inserted
             if (go) {
                 if (confirm("These will be added to the Database:\n" +
@@ -288,10 +290,12 @@ public class AddFamilyController implements Initializable {
                 insert.setString(2, childid.toString());
                 insert.executeUpdate();
             }
+
             //Message Child inserted
             if (go) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Added to Database", ButtonType.CLOSE);
             alert.show();}
+
         } catch (Exception e) {
             e.printStackTrace();
         }
