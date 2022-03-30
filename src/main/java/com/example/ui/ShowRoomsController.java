@@ -265,12 +265,6 @@ public class ShowRoomsController implements Initializable {
                     else if (SearchObjects.getClass_id().toString().contains(searchkeyword)) {
                         return true;
                     }
-                    else if (SearchObjects.getEmployee_firstname().toLowerCase().contains(searchkeyword)) {
-                        return true;
-                    }
-                    else if (SearchObjects.getEmployee_lastname().toLowerCase().contains(searchkeyword)) {
-                        return true;
-                    }
                     else
                         return false;
                 });

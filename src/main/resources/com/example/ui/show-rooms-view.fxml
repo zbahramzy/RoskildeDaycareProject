@@ -34,7 +34,7 @@
          <font>
             <Font size="18.0" />
          </font></Button>
-      <ComboBox fx:id="class_combobox" layoutX="68.0" layoutY="81.0"  prefHeight="34.0" prefWidth="110.0" promptText="Class 1" />
+      <ComboBox fx:id="class_combobox" layoutX="68.0" layoutY="81.0" prefHeight="34.0" prefWidth="110.0" promptText="Class 1" />
       <TableView fx:id="room_search2" layoutX="596.0" layoutY="140.0" prefHeight="418.0" prefWidth="462.0">
         <columns>
           <TableColumn fx:id="employee_firstname_column" prefWidth="223.0" text="Teacher First Name" />
