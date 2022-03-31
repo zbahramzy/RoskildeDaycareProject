@@ -182,16 +182,16 @@ public class ShowParentsController implements Initializable {
             Statement stmt = connectDB.createStatement();
             ResultSet rs_pie = stmt.executeQuery(sql_piechart);
             int i1= 0;
-            int i2= 0;
-            int enrolments_count=0;
-            int waiting_list_count=0;
+
+
+
             ArrayList<Integer>numbersPie=new ArrayList<>();
             while (rs_pie.next()) {
                 numbersPie.add(rs_pie.getInt("m1"));
 
             }
-            enrolments_count=numbersPie.get(0);
-            waiting_list_count=numbersPie.get(1);
+            int enrolments_count=numbersPie.get(0);
+            int waiting_list_count=numbersPie.get(1);
             //get persentage of enrolments_count and waiting_list_count
             double enrolments_percentage=(enrolments_count*100)/(enrolments_count+waiting_list_count);
             double waiting_list_percentage=(waiting_list_count*100)/(enrolments_count+waiting_list_count);
@@ -251,7 +251,7 @@ public class ShowParentsController implements Initializable {
 
                     }
             );
-            //make it to rotate when mouse pressed
+
 
 
 
@@ -354,7 +354,7 @@ public class ShowParentsController implements Initializable {
             Logger.getLogger(ShowParentsController.class.getName()).log(Level.SEVERE, null, e);
             e.printStackTrace();
         }
-//make a parents_table work with vbox and animated transition and fade in
+
 
 
 
